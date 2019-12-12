@@ -1,6 +1,7 @@
 package com.example.bexchange;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -14,6 +15,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -21,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.ImageView;
 
 public class DashboardActivity2 extends AppCompatActivity {
 
@@ -55,6 +59,7 @@ public class DashboardActivity2 extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
     }
 
     @Override
@@ -66,7 +71,13 @@ public class DashboardActivity2 extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        ImageView profilephoto = findViewById(R.id.imageView);
+        //Uri photoUrl = user.getPhotoUrl();
+        //System.out.println("JE SUIS LA PHOTO DE PROFIL DU USER " + user.getPhotoUrl());
+        profilephoto.setImageResource(R.drawable.woman); //change it with user's profile photo
+       // profilephoto.setImageURI(photoUrl);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }

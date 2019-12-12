@@ -13,7 +13,13 @@ import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
 
@@ -37,12 +43,43 @@ public class AddBookActivity extends AppCompatActivity {
                 TextView tvId = (TextView) findViewById(R.id.barcode_result);
 
                 if(data!=null){
-                    Barcode barcode = data.getParcelableExtra("barcode");
-                    Log.d("b","JE COMPRREEEEENNNNNDSSSS 3 " + barcode);
-                    Log.d("b","JE COMPRREEEEENNNNNDSSSS 2 " + barcode.displayValue);
-
-
+                    final Barcode barcode = data.getParcelableExtra("barcode");
                     tvId.setText("Barcode Value : " + barcode.displayValue);
+
+                    Thread thread = new Thread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            try  {
+                                HttpURLConnection urlConnection = null;
+                                java.net.URL url = new URL("https://www.googleapis.com/books/v1/volumes?q=isbn:" + barcode.displayValue);
+                                urlConnection = (HttpURLConnection) url.openConnection();
+                                urlConnection.setRequestMethod("GET");
+                                urlConnection.setReadTimeout(10000 /* milliseconds */ );
+                                urlConnection.setConnectTimeout(15000 /* milliseconds */ );
+                                urlConnection.setDoOutput(true);
+                                urlConnection.connect();
+
+                                BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+                                StringBuilder sb = new StringBuilder();
+
+                                String line;
+                                while ((line = br.readLine()) != null) {
+                                    sb.append(line + "\n");
+                                }
+                                br.close();
+
+                                String jsonString = sb.toString();
+                                System.out.println("JSON: " + jsonString);
+                                JSONObject books = new JSONObject(jsonString);
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                    thread.start();
+
                 }
                 else{
                     tvId.setText("No barcode FOUND");
@@ -53,5 +90,6 @@ public class AddBookActivity extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
+
 
 }

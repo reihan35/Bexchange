@@ -4,6 +4,11 @@ import android.os.Bundle;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
+
+import com.google.firebase.auth.FirebaseAuth;
+
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -12,6 +17,8 @@ import java.net.URL;
 public class MainActivity extends AppCompatActivity {
 
     Button registerBtn, loginBtn;
+    private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,39 +29,11 @@ public class MainActivity extends AppCompatActivity {
 
         //HttpGet httpget= new HttpGet("https://www.googleapis.com/books/v1/volumes?q=isbn:9782253150978");
         //HttpGet httpget= new HttpGet("www.google.com");
-        Thread thread = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                try  {
-                    HttpURLConnection urlConnection = null;
-                    URL url = new URL("https://www.googleapis.com/books/v1/volumes?q=isbn:9782253150978");
-                    urlConnection = (HttpURLConnection) url.openConnection();
-                    urlConnection.setRequestMethod("GET");
-                    urlConnection.setReadTimeout(10000 /* milliseconds */ );
-                    urlConnection.setConnectTimeout(15000 /* milliseconds */ );
-                    urlConnection.setDoOutput(true);
-                    urlConnection.connect();
-
-                    BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
-                    StringBuilder sb = new StringBuilder();
-
-                    String line;
-                    while ((line = br.readLine()) != null) {
-                        sb.append(line + "\n");
-                    }
-                    br.close();
-
-                    String jsonString = sb.toString();
-                    System.out.println("JSON: " + jsonString);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        thread.start();
+        mAuth = FirebaseAuth.getInstance();
+        if (mAuth.getCurrentUser() != null) {
+            startActivity(new Intent(MainActivity.this, DashboardActivity2.class));
+            finish();
+        }
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
