@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        //setContentView(R.layout.activity_main);
 
         initializeViews();
 
@@ -30,12 +30,15 @@ public class MainActivity extends AppCompatActivity {
         //HttpGet httpget= new HttpGet("https://www.googleapis.com/books/v1/volumes?q=isbn:9782253150978");
         //HttpGet httpget= new HttpGet("www.google.com");
         mAuth = FirebaseAuth.getInstance();
-        if (mAuth.getCurrentUser() != null) {
+       /* if (mAuth.getCurrentUser() != null) {
             startActivity(new Intent(MainActivity.this, DashboardActivity2.class));
             finish();
-        }
+        }*/
 
-        registerBtn.setOnClickListener(new View.OnClickListener() {
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
+
+        /*registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
@@ -48,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
     }
 
 

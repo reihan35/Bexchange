@@ -8,11 +8,20 @@
     android:orientation="vertical"
     android:padding="16dp"
     tools:context=".RegistrationActivity">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/book3"
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Register new account" />
+        android:text="Register new account"
+        android:layout_marginTop="24dp"
+        />
 
     <EditText
         android:id="@+id/name"
@@ -20,24 +29,31 @@
         android:layout_height="wrap_content"
         android:hint="Name" />
 
+
     <EditText
         android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email" />
+        android:hint="Email"
+        />
 
     <EditText
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Password"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:layout_marginTop="8dp"
+        />
 
     <Button
         android:id="@+id/register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Register" />
+        android:background="@drawable/button_drawable"
+        android:layout_marginTop="24dp"
+        android:text="Register"
+        style="?android:attr/borderlessButtonStyle"/>
 
     <ProgressBar
         android:id="@+id/progressBar"

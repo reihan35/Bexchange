@@ -48,6 +48,10 @@ dependencies {
     implementation 'com.android.support:cardview-v7:29.3.1'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.google.android.gms:play-services-vision:19.0.0'
+    implementation 'com.google.android.material:material'
+    implementation 'com.google.android.material:material:1.1.0-alpha06'
+
+
 
 }
 

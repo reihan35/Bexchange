@@ -9,28 +9,52 @@
     android:padding="16dp"
     tools:context=".LoginActivity">
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/book3"
+        />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Account login"/>
+        android:text="Account login"
+        />
     <EditText
         android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email" />
+        android:hint="Email"
+        />
 
     <EditText
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Password"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:layout_marginTop="8dp"
+        />
 
     <Button
         android:id="@+id/login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login" />
+        android:background="@drawable/button_drawable"
+        android:layout_marginTop="24dp"
+        android:text="Login"
+        style="?android:attr/borderlessButtonStyle"/>
+
+    <TextView android:id="@+id/link_signup"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_marginTop="24dp"
+        android:text="No account yet? Create one"
+        android:gravity="center"
+        android:textSize="16dip"/>
 
     <ProgressBar
         android:id="@+id/progressBar"

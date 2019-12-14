@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,6 +21,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText emailTV, passwordTV;
     private Button loginBtn;
     private ProgressBar progressBar;
+    private TextView link;
 
     private FirebaseAuth mAuth;
     @Override
@@ -37,6 +39,21 @@ public class LoginActivity extends AppCompatActivity {
                 loginUserAccount();
             }
         });
+        link.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // Start the Signup activity
+                Intent intent = new Intent(LoginActivity.this, RegistrationActivity.class);
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    public void onBackPressed() {
+// super.onBackPressed();
+// Not calling **super**, disables back button in current screen.
     }
 
     private void loginUserAccount() {
@@ -77,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
     private void initializeUI() {
         emailTV = findViewById(R.id.email);
         passwordTV = findViewById(R.id.password);
-
+        link = findViewById(R.id.link_signup);
         loginBtn = findViewById(R.id.login);
         progressBar = findViewById(R.id.progressBar);
     }
