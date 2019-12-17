@@ -9,6 +9,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import android.view.View;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -24,19 +25,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 public class DashboardActivity2 extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+    private FrameLayout log_out;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard2);
         Toolbar toolbar = findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
+        mAuth = FirebaseAuth.getInstance();
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,6 +67,20 @@ public class DashboardActivity2 extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        /*private Button logOut = findViewById(R.id.logout);
+
+        //log_out = findViewById(R.id.nav_share);
+        logOut.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // Start the Signup activity
+                mAuth.signOut();
+                Intent intent = new Intent(DashboardActivity2.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });*/
+
 
     }
 

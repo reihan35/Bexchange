@@ -2,6 +2,7 @@ package com.example.bexchange;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -30,13 +31,15 @@ public class MainActivity extends AppCompatActivity {
         //HttpGet httpget= new HttpGet("https://www.googleapis.com/books/v1/volumes?q=isbn:9782253150978");
         //HttpGet httpget= new HttpGet("www.google.com");
         mAuth = FirebaseAuth.getInstance();
-       /* if (mAuth.getCurrentUser() != null) {
+        System.out.println(mAuth.getCurrentUser() != null);
+        if (mAuth.getCurrentUser() != null) {
             startActivity(new Intent(MainActivity.this, DashboardActivity2.class));
             finish();
-        }*/
-
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        startActivity(intent);
+        }
+        else {
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
 
         /*registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override

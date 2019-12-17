@@ -35,6 +35,7 @@ public class RegistrationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registration);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
 
         initializeUI();
@@ -64,10 +65,12 @@ public class RegistrationActivity extends AppCompatActivity {
             return;
         }
 
-        if (TextUtils.isEmpty(password)) {
+        if (TextUtils.isEmpty(name)) {
             Toast.makeText(getApplicationContext(), "Please enter your name!", Toast.LENGTH_LONG).show();
             return;
         }
+
+        Log.d("2","!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + password + " " + email);
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -87,7 +90,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     }
                 });
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        /*FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setDisplayName(name)
@@ -104,12 +107,12 @@ public class RegistrationActivity extends AppCompatActivity {
                     }
                 });
 
-
+        */
 
     }
 
     private void initializeUI() {
-        emailTV = findViewById(R.id.email);
+        emailTV = findViewById(R.id.email2);
         passwordTV = findViewById(R.id.password);
         regBtn = findViewById(R.id.register);
         progressBar = findViewById(R.id.progressBar);
