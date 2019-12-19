@@ -22,6 +22,5 @@
             <stroke android:width="3px" android:color="#00C1B2" />
         </shape>
     </item>
-    <?xml version="1.0" encoding="utf-8"?>
 
 </selector>
