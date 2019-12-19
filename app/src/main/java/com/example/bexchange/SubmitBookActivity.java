@@ -6,11 +6,14 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.bexchange.R;
 import com.example.bexchange.NotABookException;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,6 +31,8 @@ public class SubmitBookActivity extends AppCompatActivity {
             Drawable d = Drawable.createFromStream(is, "src name");
             return d;
         } catch (Exception e) {
+            System.out.println("MOI JE SUIS ICI");
+            e.printStackTrace();
             return null;
         }
     }
@@ -50,9 +55,10 @@ public class SubmitBookActivity extends AppCompatActivity {
             TextView titleView = findViewById(R.id.bookTitle);
             TextView resumeView = findViewById(R.id.bookResume);
             ImageView imgBook = findViewById(R.id.bookImage);
-            //imgBook.setImageDrawable(LoadImageFromWebOperations(urlImage));
-            //titleView.setText(title);
-            //resumeView.setText(resume);
+          //  Log.d("s","??????????????" + LoadImageFromWebOperations(urlImage).getIntrinsicWidth());
+            imgBook.setImageDrawable(LoadImageFromWebOperations(urlImage));
+            titleView.setText(title);
+            resumeView.setText(resume);
             Log.d("JSON", book.toString());
             Log.d("JSON", bookInfo.toString());
             Log.d("JSON", urlImage.toString());

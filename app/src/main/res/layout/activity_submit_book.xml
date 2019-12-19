@@ -9,29 +9,31 @@
 
         <ImageView
             android:id="@+id/bookImage"
-            android:layout_width="100dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/add"
-            android:src="@drawable/add"
+            android:src="@drawable/ic_menu_camera"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/bookTitle"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.513" />
+            app:layout_constraintVertical_bias="0.062" />
 
         <TextView
             android:id="@+id/bookTitle"
-            android:layout_width="0dp"
+            android:textStyle="bold"
+            android:layout_width="230dp"
             android:layout_height="wrap_content"
             android:text="this is just a test"
             app:layout_constrainedWidth="true"
-            app:layout_constraintLeft_toRightOf="@id/bookImage"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/bookImage"
 
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.042" />
 
         <TextView
             android:id="@+id/bookResume"
-            android:layout_width="0dp"
+            android:layout_width="290dp"
             android:layout_height="wrap_content"
             android:text="resume"
             app:layout_constrainedWidth="true"
