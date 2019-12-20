@@ -40,4 +40,14 @@
             app:layout_constraintLeft_toRightOf="@id/bookImage"
             app:layout_constraintTop_toBottomOf="@+id/bookTitle" />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/bookResume"
+            app:layout_constraintLeft_toRightOf="@id/bookImage"
+            android:layout_marginTop="20dp"
+            android:text="Ajouter"
+            android:onClick="addToDatabase"
+            />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
