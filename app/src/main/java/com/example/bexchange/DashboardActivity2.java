@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -57,7 +58,8 @@ public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyC
         setContentView(R.layout.activity_dashboard2);
         Toolbar toolbar = findViewById(R.id.toolbar);
 
-
+        defaultLocation.setLatitude(48.864716);
+        defaultLocation.setLongitude(2.349014);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
         mAuth = FirebaseAuth.getInstance();
@@ -69,6 +71,7 @@ public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyC
                         REQUEST_CODE_ASK_PERMISSIONS);
             }
         }
+        getLocation();
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -116,9 +119,10 @@ public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyC
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng paris = new LatLng(48.864716, 2.349014);
-        mMap.addMarker(new MarkerOptions().position(paris).title("Marker in Paris"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(paris, 15F));
+        Location loc = getLocation();
+        LatLng userLoc = new LatLng(loc.getLatitude(), loc.getLongitude());
+        mMap.addMarker(new MarkerOptions().position(userLoc).title("Marker user"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLoc, 15F));
     }
 
     @Override
@@ -163,17 +167,13 @@ public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyC
     }
 
     //Get location
-    public void getLocation() {
+    private static Location defaultLocation = new Location("");
+    public Location getLocation() {
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    Activity#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for Activity#requestPermissions for more details.
-            return;
+            return defaultLocation;
         }
         Location myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         if (myLocation == null)
@@ -181,6 +181,7 @@ public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyC
             myLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
 
         }
+        return myLocation;
     }
 
 }

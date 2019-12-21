@@ -168,13 +168,12 @@ public class SubmitBookActivity extends AppCompatActivity {
         try {
             book = new JSONObject(intent.getStringExtra("book"));
             if (book.getInt("totalItems") == 0) {
-                throw new NotABookException();
+                Intent intent2 = new Intent(SubmitBookActivity.this,FillFormBookV2.class);
+                startActivity(intent2);
             } else {
                 book = book.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo");
             }
         } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (NotABookException e) {
             e.printStackTrace();
         }
         Log.d("JSON", book.toString());

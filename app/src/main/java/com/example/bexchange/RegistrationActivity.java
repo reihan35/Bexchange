@@ -70,8 +70,6 @@ public class RegistrationActivity extends AppCompatActivity {
             return;
         }
 
-        Log.d("2","!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + password + " " + email);
-
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override

@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 29
@@ -23,11 +25,11 @@ android {
         }
     }
     buildTypes {
-        debug{
-            manifestPlaceholders = [usesCleartextTraffic:"true"]
+        debug {
+            manifestPlaceholders = [usesCleartextTraffic: "true"]
         }
         release {
-            manifestPlaceholders = [usesCleartextTraffic:"false"]
+            manifestPlaceholders = [usesCleartextTraffic: "false"]
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -55,8 +57,13 @@ dependencies {
     implementation 'com.google.android.gms:play-services-vision:19.0.0'
     implementation 'com.google.android.material:material'
     implementation 'com.google.android.material:material:1.1.0-alpha06'
+    implementation 'com.google.android.gms:play-services-vision:19.0.0'
+    implementation 'ch.hsr:geohash:1.4.0'
 
 
 }
 
 apply plugin: 'com.google.gms.google-services'
+repositories {
+    mavenCentral()
+}
