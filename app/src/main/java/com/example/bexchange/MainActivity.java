@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         System.out.println(mAuth.getCurrentUser() != null);
         if (mAuth.getCurrentUser() != null) {
+           //startActivity(new Intent(MainActivity.this, MapsActivity.class));
+
             startActivity(new Intent(MainActivity.this, DashboardActivity2.class));
             finish();
         }

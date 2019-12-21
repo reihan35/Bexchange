@@ -1,100 +1,81 @@
 package com.example.bexchange;
 
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import android.view.View;
-
-import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
-import androidx.drawerlayout.widget.DrawerLayout;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
-import android.widget.Button;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyCallback {
 
+public class MapsActivity extends FragmentActivity  implements OnMapReadyCallback {
+
+    private GoogleMap mMap;
     private AppBarConfiguration mAppBarConfiguration;
     private FrameLayout log_out;
     private FirebaseAuth mAuth;
-    private GoogleMap mMap;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard2);
+        Log.d("a","je rentre ici !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+        setContentView(R.layout.activity_maps);
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
 
 
-        setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
         mAuth = FirebaseAuth.getInstance();
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(DashboardActivity2.this,AddBookActivity.class);
+                Intent intent = new Intent(MapsActivity.this,AddBookActivity.class);
                 startActivity(intent);
                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();*/
             }
 
         });
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                 R.id.nav_slideshow,
-                R.id.nav_tools, R.id.nav_share, R.id.nav_send)
-                .setDrawerLayout(drawer)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
-        /*private Button logOut = findViewById(R.id.logout);
-
-        //log_out = findViewById(R.id.nav_share);
-        logOut.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // Start the Signup activity
-                mAuth.signOut();
-                Intent intent = new Intent(DashboardActivity2.this, LoginActivity.class);
-                startActivity(intent);
-            }
-        });*/
-
 
     }
+
+
+    /**
+     * Manipulates the map once available.
+     * This callback is triggered when the map is ready to be used.
+     * This is where we can add markers or lines, add listeners or move the camera. In this case,
+     * we just add a marker near Sydney, Australia.
+     * If Google Play services is not installed on the device, the user will be prompted to install
+     * it inside the SupportMapFragment. This method will only be triggered once the user has
+     * installed Google Play services and returned to the app.
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -114,8 +95,7 @@ public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyC
     }
 
 
-
-    @Override
+   /* @Override
     public boolean onSupportNavigateUp() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -123,9 +103,11 @@ public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyC
         //Uri photoUrl = user.getPhotoUrl();
         //System.out.println("JE SUIS LA PHOTO DE PROFIL DU USER " + user.getPhotoUrl());
         profilephoto.setImageResource(R.drawable.woman); //change it with user's profile photo
-       // profilephoto.setImageURI(photoUrl);
+        // profilephoto.setImageURI(photoUrl);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+*/
+
 
 }
