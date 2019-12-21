@@ -35,6 +35,7 @@ import java.net.URLConnection;
 import java.util.Iterator;
 
 import static com.example.bexchange.Util.JSONUtil.toMap;
+import static com.example.bexchange.Util.TextViewUtil.makeTextViewResizable;
 
 public class SubmitBookActivity extends AppCompatActivity {
     private JSONObject book;
@@ -116,16 +117,20 @@ public class SubmitBookActivity extends AppCompatActivity {
             Log.d("JSON", s);
 
         }
-        String urlImage = bookInfo.getJSONObject("imageLinks").getString("smallThumbnail");
+        String urlImage = bookInfo.getJSONObject("imageLinks").getString("thumbnail");
         String title = bookInfo.getString("title");
         String resume = bookInfo.getString("description");
         TextView titleView = findViewById(R.id.bookTitle);
         TextView resumeView = findViewById(R.id.bookResume);
         ImageView imgBook = findViewById(R.id.bookImage);
+        Log.d("JSON", "avant " +  urlImage);
+        urlImage = urlImage.replaceAll("&zoom=[0-9]+&", "&zoom=2&");
+        Log.d("JSON", "apres " + urlImage);
         new UrlLoadingTask(imgBook).execute(new URL(urlImage));
         //  Log.d("s","??????????????" + LoadImageFromWebOperations(urlImage).getIntrinsicWidth());
         titleView.setText(title);
         resumeView.setText(resume);
+        makeTextViewResizable(resumeView, 3, "Voir Plus", true);
         Log.d("JSON", book.toString());
         Log.d("JSON", bookInfo.toString());
         Log.d("JSON", urlImage.toString());
