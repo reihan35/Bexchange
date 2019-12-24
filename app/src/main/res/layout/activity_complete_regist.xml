@@ -7,7 +7,10 @@
     android:gravity="center_vertical"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".RegistrationActivity">
+    tools:context=".CompleteRegist">
+
+
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="150dp"
@@ -16,29 +19,45 @@
         android:src="@drawable/book3"
         />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/avatar"
+        />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Register new account"
+        android:text="Please complete your information"
         android:layout_marginTop="24dp"
         />
 
-
     <EditText
-        android:id="@+id/email2"
+        android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email"
-        />
+        android:hint="Name" />
+
+
 
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/adress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:layout_marginTop="8dp"
+        android:hint="adress"
         />
+
+    <Button
+        android:id="@+id/photo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_drawable"
+        android:layout_marginTop="24dp"
+        android:text="Add profile photo"
+        style="?android:attr/borderlessButtonStyle"/>
+
 
     <Button
         android:id="@+id/register"
