@@ -16,8 +16,10 @@ import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -45,7 +47,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyCallback {
+public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener,
+        GoogleMap.OnMyLocationClickListener {
 
     private AppBarConfiguration mAppBarConfiguration;
     private FrameLayout log_out;
@@ -120,9 +123,31 @@ public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyC
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng paris = new LatLng(48.864716, 2.349014);
-        mMap.addMarker(new MarkerOptions().position(paris).title("Marker in Paris"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(paris, 15F));
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+            mMap.setOnMyLocationButtonClickListener(this);
+            mMap.setOnMyLocationClickListener(this);
+            // Set a preference for minimum and maximum zoom.
+
+            //  mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(, 15F));
+
+        }
+
+        //LatLng paris = new LatLng(48.864716, 2.349014);
+       // mMap.addMarker(new MarkerOptions().position(paris).title("Marker in Paris"));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(paris, 15F));
+    }
+
+    public void onMyLocationClick(@NonNull Location location) {
+        Toast.makeText(this, "Current location:\n" + location, Toast.LENGTH_LONG).show();
+    }
+
+    public boolean onMyLocationButtonClick() {
+        Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
+        // Return false so that we don't consume the event and the default behavior still occurs
+        // (the camera animates to the user's current position).
+        return false;
     }
 
     @Override

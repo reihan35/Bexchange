@@ -40,14 +40,18 @@
         android:layout_height="wrap_content"
         android:hint="Name" />
 
-
-
     <EditText
         android:id="@+id/adress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="adress"
         />
+
+    <EditText
+        android:id="@+id/postalCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Postal code" />
 
     <Button
         android:id="@+id/photo"
@@ -60,7 +64,7 @@
 
 
     <Button
-        android:id="@+id/register"
+        android:id="@+id/register3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/button_drawable"
