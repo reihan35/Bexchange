@@ -23,7 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class RegistrationActivity extends AppCompatActivity {
 
-    private EditText emailTV, passwordTV,nameTV;
+    private EditText emailTV, passwordTV;
     private Button regBtn;
     private ProgressBar progressBar;
 
@@ -54,7 +54,6 @@ public class RegistrationActivity extends AppCompatActivity {
         String email, password,name;
         email = emailTV.getText().toString();
         password = passwordTV.getText().toString();
-        name = nameTV.getText().toString();
 
         if (TextUtils.isEmpty(email)) {
             Toast.makeText(getApplicationContext(), "Please enter email...", Toast.LENGTH_LONG).show();
@@ -62,11 +61,6 @@ public class RegistrationActivity extends AppCompatActivity {
         }
         if (TextUtils.isEmpty(password)) {
             Toast.makeText(getApplicationContext(), "Please enter password!", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        if (TextUtils.isEmpty(name)) {
-            Toast.makeText(getApplicationContext(), "Please enter your name!", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -80,7 +74,7 @@ public class RegistrationActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Registration successful!", Toast.LENGTH_LONG).show();
                             progressBar.setVisibility(View.GONE);
 
-                            Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
+                            Intent intent = new Intent(RegistrationActivity.this, CompleteRegist.class);
                             startActivity(intent);
                         }
                         else {
@@ -116,6 +110,5 @@ public class RegistrationActivity extends AppCompatActivity {
         passwordTV = findViewById(R.id.password);
         regBtn = findViewById(R.id.register);
         progressBar = findViewById(R.id.progressBar);
-        nameTV = findViewById(R.id.name);
     }
 }
