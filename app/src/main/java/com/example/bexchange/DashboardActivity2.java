@@ -13,6 +13,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -46,6 +47,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener,
         GoogleMap.OnMyLocationClickListener {
@@ -126,17 +130,53 @@ public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyC
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
+
             mMap.setOnMyLocationButtonClickListener(this);
             mMap.setOnMyLocationClickListener(this);
-            // Set a preference for minimum and maximum zoom.
-
-            //  mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(, 15F));
+            ArrayList<LatLng> markers = new ArrayList<LatLng>();
+            markers.add(new LatLng(48.87,2.32));
+            markers.add(new LatLng(48.822,2.32));
+            markers.add(new LatLng(48.90,2.32));
+            addMarkerFromLatLongList(markers);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markers.get(0), 13F));
 
         }
 
         //LatLng paris = new LatLng(48.864716, 2.349014);
        // mMap.addMarker(new MarkerOptions().position(paris).title("Marker in Paris"));
         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(paris, 15F));
+    }
+
+    public double CalculationByDistance(LatLng StartP, LatLng EndP) {
+        int Radius = 6371;// radius of earth in Km
+        double lat1 = StartP.latitude;
+        double lat2 = EndP.latitude;
+        double lon1 = StartP.longitude;
+        double lon2 = EndP.longitude;
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + Math.cos(Math.toRadians(lat1))
+                * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
+                * Math.sin(dLon / 2);
+        double c = 2 * Math.asin(Math.sqrt(a));
+        double valueResult = Radius * c;
+        double km = valueResult / 1;
+        DecimalFormat newFormat = new DecimalFormat("####");
+        int kmInDec = Integer.valueOf(newFormat.format(km));
+        double meter = valueResult % 1000;
+        int meterInDec = Integer.valueOf(newFormat.format(meter));
+        Log.i("Radius Value", "" + valueResult + "   KM  " + kmInDec
+                + " Meter   " + meterInDec);
+
+        return Radius * c;
+    }
+
+
+    public void addMarkerFromLatLongList(ArrayList<LatLng> latlongs){
+        for (int i=0; i<latlongs.size();i++){
+            mMap.addMarker(new MarkerOptions().position(latlongs.get(i)));
+        }
     }
 
     public void onMyLocationClick(@NonNull Location location) {

@@ -79,8 +79,6 @@ public class CompleteRegist extends AppCompatActivity {
                             }
                         });
 
-
-
                 /*b.collection("users").add(user).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
