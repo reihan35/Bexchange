@@ -164,6 +164,8 @@ public class SubmitBookActivity extends AppCompatActivity {
         setContentView(R.layout.activity_submit_book);
         Intent intent = getIntent();
         intent.getStringExtra("book");
+        Intent intent3 = new Intent(SubmitBookActivity.this,FillFormBook.class);;
+        startActivity(intent3);
         book = null;
         try {
             book = new JSONObject(intent.getStringExtra("book"));

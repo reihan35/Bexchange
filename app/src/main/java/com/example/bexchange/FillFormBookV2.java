@@ -2,13 +2,18 @@ package com.example.bexchange;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,11 +25,17 @@ import com.google.android.gms.vision.text.Text;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 public class FillFormBookV2 extends AppCompatActivity implements SurfaceHolder.Callback, Detector.Processor {
 
     private SurfaceView cameraView;
     private TextView txtView;
     private CameraSource cameraSource;
+    private String txt = "";
+    private Lock l = new ReentrantLock();
+    private boolean touched = true;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -81,7 +92,6 @@ public class FillFormBookV2 extends AppCompatActivity implements SurfaceHolder.C
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
     }
 
     @Override
@@ -91,43 +101,63 @@ public class FillFormBookV2 extends AppCompatActivity implements SurfaceHolder.C
 
     @Override
     public void release() {
-
     }
 
     @Override
     public void receiveDetections(Detector.Detections detections) {
-        SparseArray items = detections.getDetectedItems();
-        final StringBuilder strBuilder = new StringBuilder();
-        for (int i = 0; i < items.size(); i++)
-        {
-            TextBlock item = (TextBlock)items.valueAt(i);
-            strBuilder.append(item.getValue());
-            strBuilder.append("/");
-            // The following Process is used to show how to use lines & elements as well
-            for (int j = 0; j < items.size(); j++) {
-            TextBlock textBlock = (TextBlock) items.valueAt(j);
-            strBuilder.append(textBlock.getValue());
-            strBuilder.append("/");
-            for (Text line : textBlock.getComponents()) {
-            //extract scanned text lines here
-            Log.v("lines", line.getValue());
-            strBuilder.append(line.getValue());
-            strBuilder.append("/");
-            for (Text element : line.getComponents()) {
-            //extract scanned text words here
-            Log.v("element", element.getValue());
-            strBuilder.append(element.getValue());
-        }
-        }
-        }
-        }
-        Log.v("strBuilder.toString()", strBuilder.toString());
-
-        txtView.post(new Runnable() {
-            @Override
-            public void run() {
-                txtView.setText(strBuilder.toString());
+        if(touched) {
+            touched = false;
+            SparseArray items = detections.getDetectedItems();
+            Log.d("taille item", "" + items.size());
+            final StringBuilder strBuilder = new StringBuilder();
+            for (int i = 0; i < items.size(); i++) {
+                TextBlock item = (TextBlock) items.valueAt(i);
+                strBuilder.append(item.getValue());
+                strBuilder.append("/");
+                // The following Process is used to show how to use lines & elements as well
+                /*
+                for (int j = 0; j < items.size(); j++) {
+                    TextBlock textBlock = (TextBlock) items.valueAt(j);
+                    strBuilder.append(textBlock.getValue());
+                    strBuilder.append("/");
+                    for (Text line : textBlock.getComponents()) {
+                        //extract scanned text lines here
+                        Log.v("lines", line.getValue());
+                        strBuilder.append(line.getValue());
+                        strBuilder.append("/");
+                        for (Text element : line.getComponents()) {
+                            //extract scanned text words here
+                            Log.v("element", element.getValue());
+                            strBuilder.append(element.getValue());
+                        }
+                    }
+                }*/
             }
-        });
+            Log.v("strBuilder.toString()", strBuilder.toString());
+            txt = strBuilder.toString();
+
+            txtView.post(new Runnable() {
+                @Override
+                public void run() {
+                    txtView.setText(strBuilder.toString());
+                }
+            });
+        }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent evt) {
+        if (evt.getAction() == MotionEvent.ACTION_DOWN) {
+            touched = true;
+        }
+        return true;
+    }
+
+    public void resumeOk(View v){
+        Intent data = getIntent();
+        data.setData(Uri.parse(txt));
+        setResult(RESULT_OK, data);
+        //---close the activity---
+        finish();
     }
 }

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ import com.google.android.gms.vision.text.TextRecognizer;
 public class FillFormBook extends Activity
 {
     private static final int CAMERA_REQUEST = 1888;
+    private static final int RESUME_REQUEST = 1889;
     private ImageView imageView;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
 
@@ -31,7 +33,8 @@ public class FillFormBook extends Activity
     {
         super.onCreate(savedInstanceState);
         Log.d("test", "im here");
-        setContentView(R.layout.fill_form_book);
+        setContentView(R.layout.activity_fill_form_book);
+        /*
         this.imageView = (ImageView)this.findViewById(R.id.bookImage);
         Button photoButton = (Button) this.findViewById(R.id.buttonPhoto);
         photoButton.setOnClickListener(new View.OnClickListener()
@@ -50,9 +53,15 @@ public class FillFormBook extends Activity
                     startActivityForResult(cameraIntent, CAMERA_REQUEST);
                 }
             }
-        });
+        });*/
     }
 
+    public void scanResume(View view){
+        Intent intent = new Intent(FillFormBook.this,FillFormBookV2.class);
+        startActivityForResult(intent, RESUME_REQUEST);
+    }
+
+    /*
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
     {
@@ -71,38 +80,19 @@ public class FillFormBook extends Activity
             }
         }
     }
+    */
+
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        Log.d("test", "im here2");
-        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK)
-        {
-            Log.d("test", "im here2");
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            TextRecognizer textRecognizer = new TextRecognizer.Builder(getApplicationContext()).build();
-            if(!textRecognizer.isOperational()){
-                Toast.makeText(getApplicationContext(), "Try later", Toast.LENGTH_LONG).show();
-                return;
-
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == RESUME_REQUEST) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                EditText resume = findViewById(R.id.descriptionEdit);
+                resume.setText(data.getData().toString());
             }
-            Frame imageFrame = new Frame.Builder()
-
-                    .setBitmap(photo)                 // your image bitmap
-                    .build();
-
-            String imageText = "";
-
-
-            SparseArray<TextBlock> textBlocks = textRecognizer.detect(imageFrame);
-
-            for (int i = 0; i < textBlocks.size(); i++) {
-                TextBlock textBlock = textBlocks.get(textBlocks.keyAt(i));
-                imageText += textBlock.getValue();                   // return string
-            }
-            //TextView dv = this.findViewById(R.id.detectedText);
-
-            Log.d("txt img : " , imageText);
         }
     }
+
 }
