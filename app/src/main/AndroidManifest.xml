@@ -23,7 +23,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="${usesCleartextTraffic}">
-        <activity android:name=".FillFormBookV2"></activity>
+        <activity android:name=".GenImageActivity"></activity>
+        <activity android:name=".FillFormBookV2" />
         <activity android:name=".FillFormBook" />
         <activity android:name=".SubmitBookActivity" />
         <!--

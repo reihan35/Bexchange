@@ -1,3 +1,7 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -82,7 +86,7 @@
             <EditText
                 android:id="@+id/descriptionEdit"
                 android:inputType="textMultiLine"
-                android:hint="Entrez l'auteur"
+                android:hint="Entrez la description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <Button
@@ -94,6 +98,40 @@
             </LinearLayout>
     </LinearLayout>
 
-
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="15sp">
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="Couverture :"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/book_picture"
+                android:src="@drawable/camera"
+                android:visibility="gone"/>
+            <Button
+                android:id="@+id/submit_book_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Photo"
+                android:onClick="takePicture"/>
+        </LinearLayout>
     </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="valider"
+        android:onClick="addToDatabase"/>
+
+</LinearLayout>
+</ScrollView>
