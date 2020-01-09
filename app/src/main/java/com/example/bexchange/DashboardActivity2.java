@@ -5,20 +5,18 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
-import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
@@ -36,7 +34,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -47,6 +44,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -60,13 +60,12 @@ public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyC
     private GoogleMap mMap;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard2);
         Toolbar toolbar = findViewById(R.id.toolbar);
-
-
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
         mAuth = FirebaseAuth.getInstance();
@@ -133,19 +132,73 @@ public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyC
 
             mMap.setOnMyLocationButtonClickListener(this);
             mMap.setOnMyLocationClickListener(this);
-            ArrayList<LatLng> markers = new ArrayList<LatLng>();
-            markers.add(new LatLng(48.87,2.32));
-            markers.add(new LatLng(48.822,2.32));
-            markers.add(new LatLng(48.90,2.32));
-            addMarkerFromLatLongList(markers);
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markers.get(0), 13F));
-
+            final Double posotionLat = this.getLocation().getLatitude();
+            final Double positionLog = this.getLocation().getLongitude();
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("users")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                Log.d("a","AU MOIINNS");
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Log.d("a", document.getId() + " => " + document.getData());
+                                    Double Lat = (Double) document.get("Lat");
+                                    Double Long = (Double) document.get("Long");
+                                    LatLng p1 = new LatLng(Lat,Long);
+                                    if (CalculationByDistance(p1,(new LatLng(posotionLat,positionLog))) < 4) { //we need to change it to 0.05
+                                         mMap.addMarker(new MarkerOptions().position(p1).title(""+document.get("name")));
+                                         Log.d("a","LA DISTANCE  PPPPPPPPPPPPPPPPPPPPPPPPP");
+                                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(p1, 13F));
+                                    }
+                                }
+                            } else {
+                                Log.w("what", "Error getting documents.", task.getException());
+                            }
+                        }
+                    });
         }
 
         //LatLng paris = new LatLng(48.864716, 2.349014);
        // mMap.addMarker(new MarkerOptions().position(paris).title("Marker in Paris"));
         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(paris, 15F));
     }
+
+    /*public ArrayList<LatLng> SearchUsersWhere(){
+       // Log.d("a","MAIS WAAAATTTT THEEE FUUUUUCKKKK");
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+            final ArrayList<LatLng>  allItems = new ArrayList<>();
+        Log.d("a","!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!********************");
+
+        db.collection("users")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                Log.d("a","AU MOIINNS");
+
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Log.d("a", document.getId() + " => " + document.getData());
+                                    Double Lat = (Double) document.get("Lat");
+                                    Double Long = (Double) document.get("Long");
+                                    LatLng p1 = new LatLng(Lat,Long);
+                                    if (CalculationByDistance(p1,(new LatLng(48.87,2.32))) < 4) { //we need to change it to 0.05
+                                        Log.d("a","LA DISTANCE  PPPPPPPPPPPPPPPPPPPPPPPPP");
+                                        allItems.add(p1);
+                                        Log.d("a","ET BAH OUI "+allItems.get(0));
+                                    }
+                                }
+                            } else {
+                                Log.w("what", "Error getting documents.", task.getException());
+                            }
+                        }
+                    });
+        Log.d("a","ET BAH OUI 2222222222 "+allItems.get(0));
+        return allItems;
+        }*/
 
     public double CalculationByDistance(LatLng StartP, LatLng EndP) {
         int Radius = 6371;// radius of earth in Km
@@ -181,6 +234,8 @@ public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyC
 
     public void onMyLocationClick(@NonNull Location location) {
         Toast.makeText(this, "Current location:\n" + location, Toast.LENGTH_LONG).show();
+        location.getLatitude();
+        location.getLongitude();
     }
 
     public boolean onMyLocationButtonClick() {
@@ -259,7 +314,7 @@ public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyC
     }
 
     //Get location
-    public void getLocation() {
+    public Location getLocation() {
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -269,7 +324,7 @@ public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyC
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for Activity#requestPermissions for more details.
-            return;
+            return null;
         }
         Location myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         if (myLocation == null)
@@ -277,6 +332,7 @@ public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyC
             myLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
 
         }
+        return myLocation;
     }
 
 }
