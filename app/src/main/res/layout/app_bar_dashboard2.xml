@@ -30,4 +30,11 @@
         android:layout_margin="24dp"
         app:srcCompat="@drawable/add_book" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:onClick="listBookUser"
+        android:src="@drawable/add_book" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

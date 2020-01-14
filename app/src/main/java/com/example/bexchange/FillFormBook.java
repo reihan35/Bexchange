@@ -31,6 +31,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.example.bexchange.Util.FirebaseUtil.addBookUserJSON;
 import static com.example.bexchange.Util.JSONUtil.toMap;
 
 public class FillFormBook extends Activity
@@ -263,7 +264,6 @@ public class FillFormBook extends Activity
         book.put("title", title);
         book.put("description", desc);
         book.put("authors", author);
-
         return  book;
     }
 
@@ -281,6 +281,8 @@ public class FillFormBook extends Activity
                 Log.d("doc written", uriImg.toString());
                 JSONObject book = null;
                 book = bookFromInfos(uriImg.toString(), infos[0], infos[1], infos[2]);
+
+                addBookUserJSON(book, isbn);
                 Log.d("doc w", book.toString());
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                 Log.d("firebase", "J'ajoute un document");

@@ -22,7 +22,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="${usesCleartextTraffic}">
-        <activity android:name=".CompleteRegist"></activity>
+        <activity android:name=".ListOfBookActivity"></activity>
+        <activity android:name=".CompleteRegist" />
         <activity android:name=".FillFormBookV2" />
         <activity android:name=".FillFormBook" />
         <activity android:name=".SubmitBookActivity" />
