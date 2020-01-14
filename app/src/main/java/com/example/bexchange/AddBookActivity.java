@@ -1,7 +1,5 @@
 package com.example.bexchange;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,9 +9,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
-
 
 import org.json.JSONObject;
 
@@ -25,6 +24,7 @@ import java.net.URL;
 public class AddBookActivity extends AppCompatActivity {
 
     private static final int MY_CAMERA_REQUEST_CODE = 100;
+    private String isbn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +86,7 @@ public class AddBookActivity extends AppCompatActivity {
         Log.d("JSON", "i am here3");
         Intent intent = new Intent(AddBookActivity.this,SubmitBookActivity.class);
         intent.putExtra("book", book.toString());
+        intent.putExtra("isbn", isbn);
         startActivity(intent);
     }
 
@@ -100,6 +101,7 @@ public class AddBookActivity extends AppCompatActivity {
                     final Barcode barcode = data.getParcelableExtra("barcode");
                     Log.d("JSON", "i am here");
                     tvId.setText("Barcode Value : " + barcode.displayValue);
+                    isbn = barcode.displayValue;
 
                     new RequestBookInfo().execute(barcode);
 

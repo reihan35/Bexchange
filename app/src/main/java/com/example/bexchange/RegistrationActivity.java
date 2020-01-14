@@ -64,7 +64,14 @@ public class RegistrationActivity extends AppCompatActivity {
             return;
         }
 
+
         Log.d("2","!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + password + " " + email);
+    /*
+        if (TextUtils.isEmpty(name)) {
+            Toast.makeText(getApplicationContext(), "Please enter your name!", Toast.LENGTH_LONG).show();
+            return;
+        }
+    */
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {

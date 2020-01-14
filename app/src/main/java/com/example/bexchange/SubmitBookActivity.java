@@ -1,8 +1,5 @@
 package com.example.bexchange;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,12 +13,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.bexchange.R;
-import com.example.bexchange.NotABookException;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONException;
@@ -117,6 +113,7 @@ public class SubmitBookActivity extends AppCompatActivity {
             Log.d("JSON", s);
 
         }
+
         String urlImage = bookInfo.getJSONObject("imageLinks").getString("thumbnail");
         String title = bookInfo.getString("title");
         String resume = bookInfo.getString("description");
@@ -158,23 +155,33 @@ public class SubmitBookActivity extends AppCompatActivity {
                 });
     }
 
+
+    private static final int FILLED_BOOK_REQUEST = 1990;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_submit_book);
         Intent intent = getIntent();
         intent.getStringExtra("book");
+
         book = null;
         try {
             book = new JSONObject(intent.getStringExtra("book"));
+
+            Intent intent3 = new Intent(SubmitBookActivity.this,FillFormBook.class);
+            intent3.putExtra("isbn", getIntent().getStringExtra("isbn"));
+            startActivityForResult(intent3, FILLED_BOOK_REQUEST);
+            return;
+            /*
             if (book.getInt("totalItems") == 0) {
-                throw new NotABookException();
+                Intent intent2 = new Intent(SubmitBookActivity.this,FillFormBookV2.class);
+                intent2.putExtra("isbn", book.getJSONArray("industryIdentifiers").getJSONObject(0).getString("identifier"));
+                startActivity(intent2);
             } else {
                 book = book.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo");
-            }
+            }*/
         } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (NotABookException e) {
             e.printStackTrace();
         }
         Log.d("JSON", book.toString());
@@ -186,5 +193,34 @@ public class SubmitBookActivity extends AppCompatActivity {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
+    }
+
+    private void fillBookInfoAfterRequest(Intent data){
+        Bitmap img = (Bitmap) data.getParcelableExtra("img");
+        String title = data.getStringExtra("title");
+        String author = data.getStringExtra("author");
+        String desc = data.getStringExtra("desc");
+        TextView titleView = findViewById(R.id.bookTitle);
+        TextView resumeView = findViewById(R.id.bookResume);
+        ImageView imgBook = findViewById(R.id.bookImage);
+        titleView.setText(title);
+        resumeView.setText(desc);
+        imgBook.setImageBitmap(img);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == FILLED_BOOK_REQUEST) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                fillBookInfoAfterRequest(data);
+
+            }
+        }
+        else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+
     }
 }
