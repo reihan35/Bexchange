@@ -2,10 +2,6 @@ package com.example.bexchange;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +12,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -23,87 +21,19 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.Iterator;
 
+import static com.example.bexchange.Util.FirebaseUtil.addBookUserJSON;
 import static com.example.bexchange.Util.JSONUtil.toMap;
 import static com.example.bexchange.Util.TextViewUtil.makeTextViewResizable;
 
 public class SubmitBookActivity extends AppCompatActivity {
     private JSONObject book;
 
-    private static class UrlLoadingTask extends AsyncTask<URL, Void, Bitmap> {
-        private final ImageView updateView;
-        private boolean isCancelled = false;
-        private InputStream urlInputStream;
 
-        private UrlLoadingTask(ImageView updateView) {
-            this.updateView = updateView;
-        }
 
-        @Override
-        protected Bitmap doInBackground(URL... params) {
-            try {
-                URLConnection con = params[0].openConnection();
-                // can use some more params, i.e. caching directory etc
-                con.setUseCaches(true);
-                this.urlInputStream = con.getInputStream();
-                return BitmapFactory.decodeStream(urlInputStream);
-            } catch (IOException e) {
-                Log.w(SubmitBookActivity.class.getName(), "failed to load image from " + params[0], e);
-                return null;
-            } finally {
-                if (this.urlInputStream != null) {
-                    try {
-                        this.urlInputStream.close();
-                    } catch (IOException e) {
-                        ; // swallow
-                    } finally {
-                        this.urlInputStream = null;
-                    }
-                }
-            }
-        }
 
-        @Override
-        protected void onPostExecute(Bitmap result) {
-            if (!this.isCancelled) {
-                // hope that call is thread-safe
-                this.updateView.setImageBitmap(result);
-            }
-        }
-
-        /*
-         * just remember that we were cancelled, no synchronization necessary
-         */
-        @Override
-        protected void onCancelled() {
-            this.isCancelled = true;
-            try {
-                if (this.urlInputStream != null) {
-                    try {
-                        this.urlInputStream.close();
-                    } catch (IOException e) {
-                        ;// swallow
-                    } finally {
-                        this.urlInputStream = null;
-                    }
-                }
-            } finally {
-                super.onCancelled();
-            }
-        }
-    }
-
-    public void setImageBook(Bitmap result) {
-        ImageView imgBook = findViewById(R.id.bookImage);
-        Drawable d = new BitmapDrawable(getResources(), result);
-        imgBook.setImageDrawable(d);
-    }
 
     private void fillBookInfo(JSONObject bookInfo) throws JSONException, MalformedURLException {
 
@@ -123,8 +53,13 @@ public class SubmitBookActivity extends AppCompatActivity {
         Log.d("JSON", "avant " +  urlImage);
         urlImage = urlImage.replaceAll("&zoom=[0-9]+&", "&zoom=2&");
         Log.d("JSON", "apres " + urlImage);
-        new UrlLoadingTask(imgBook).execute(new URL(urlImage));
-        //  Log.d("s","??????????????" + LoadImageFromWebOperations(urlImage).getIntrinsicWidth());
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .placeholder(R.mipmap.ic_launcher_round)
+                .error(R.mipmap.ic_launcher_round);
+
+        Glide.with(this).load(urlImage).apply(options).into(imgBook);
+        //new UrlLoadingTask(imgBook).execute(new URL(urlImage));
         titleView.setText(title);
         resumeView.setText(resume);
         makeTextViewResizable(resumeView, 3, "Voir Plus", true);
@@ -169,30 +104,33 @@ public class SubmitBookActivity extends AppCompatActivity {
         try {
             book = new JSONObject(intent.getStringExtra("book"));
 
+            /*
             Intent intent3 = new Intent(SubmitBookActivity.this,FillFormBook.class);
             intent3.putExtra("isbn", getIntent().getStringExtra("isbn"));
             startActivityForResult(intent3, FILLED_BOOK_REQUEST);
             return;
-            /*
+            */
+            String isbn = getIntent().getStringExtra("isbn");
+            Toast.makeText(getApplicationContext(), "" + book.getInt("totalItems"), Toast.LENGTH_LONG).show();
             if (book.getInt("totalItems") == 0) {
-                Intent intent2 = new Intent(SubmitBookActivity.this,FillFormBookV2.class);
-                intent2.putExtra("isbn", book.getJSONArray("industryIdentifiers").getJSONObject(0).getString("identifier"));
-                startActivity(intent2);
+                Intent intent2 = new Intent(SubmitBookActivity.this,FillFormBook.class);
+                intent2.putExtra("isbn", isbn );
+                startActivityForResult(intent2, FILLED_BOOK_REQUEST);
             } else {
                 book = book.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo");
-            }*/
+                Log.d("JSON", book.toString());
+                try {
+                    fillBookInfo(book);
+                } catch (MalformedURLException e) {
+                    Toast.makeText(getApplicationContext(), "URLException", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
+                addBookUserJSON(book, isbn);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.d("JSON", book.toString());
-        try {
-            fillBookInfo(book);
-        } catch (JSONException e) {
-            e.printStackTrace();
 
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
     }
 
     private void fillBookInfoAfterRequest(Intent data){

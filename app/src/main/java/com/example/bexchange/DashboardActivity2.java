@@ -228,4 +228,9 @@ public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyC
         return myLocation;
     }
 
+    public void listBookUser(View view) {
+        Intent actIntent = new Intent(DashboardActivity2.this,ListOfBookActivity.class);
+        actIntent.putExtra("user", "matthieueyraud47@gmail.com");
+        startActivity(actIntent);
+    }
 }
