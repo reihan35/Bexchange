@@ -34,6 +34,15 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import android.util.Log;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import com.google.firebase.auth.FirebaseUser;
 
 public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener,
@@ -112,26 +121,119 @@ public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyC
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
         // Add a marker in Sydney and move the camera
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
+
             mMap.setOnMyLocationButtonClickListener(this);
             mMap.setOnMyLocationClickListener(this);
             // Set a preference for minimum and maximum zoom.
 
             //  mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(, 15F));
 
+            final Double posotionLat = this.getLocation().getLatitude();
+            final Double positionLog = this.getLocation().getLongitude();
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("users")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                Log.d("a","AU MOIINNS");
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Log.d("a", document.getId() + " => " + document.getData());
+                                    Double Lat = (Double) document.get("Lat");
+                                    Double Long = (Double) document.get("Long");
+                                    LatLng p1 = new LatLng(Lat,Long);
+                                    if (CalculationByDistance(p1,(new LatLng(posotionLat,positionLog))) < 4) { //we need to change it to 0.05
+                                        mMap.addMarker(new MarkerOptions().position(p1).title(""+document.get("name")));
+                                        Log.d("a","LA DISTANCE  PPPPPPPPPPPPPPPPPPPPPPPPP");
+                                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(p1, 13F));
+                                    }
+                                }
+                            } else {
+                                Log.w("what", "Error getting documents.", task.getException());
+                            }
+                        }
+                    });
         }
 
         //LatLng paris = new LatLng(48.864716, 2.349014);
-       // mMap.addMarker(new MarkerOptions().position(paris).title("Marker in Paris"));
+        // mMap.addMarker(new MarkerOptions().position(paris).title("Marker in Paris"));
         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(paris, 15F));
+    }
+
+
+    /*public ArrayList<LatLng> SearchUsersWhere(){
+       // Log.d("a","MAIS WAAAATTTT THEEE FUUUUUCKKKK");
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+            final ArrayList<LatLng>  allItems = new ArrayList<>();
+        Log.d("a","!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!********************");
+        db.collection("users")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                Log.d("a","AU MOIINNS");
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Log.d("a", document.getId() + " => " + document.getData());
+                                    Double Lat = (Double) document.get("Lat");
+                                    Double Long = (Double) document.get("Long");
+                                    LatLng p1 = new LatLng(Lat,Long);
+                                    if (CalculationByDistance(p1,(new LatLng(48.87,2.32))) < 4) { //we need to change it to 0.05
+                                        Log.d("a","LA DISTANCE  PPPPPPPPPPPPPPPPPPPPPPPPP");
+                                        allItems.add(p1);
+                                        Log.d("a","ET BAH OUI "+allItems.get(0));
+                                    }
+                                }
+                            } else {
+                                Log.w("what", "Error getting documents.", task.getException());
+                            }
+                        }
+                    });
+        Log.d("a","ET BAH OUI 2222222222 "+allItems.get(0));
+        return allItems;
+        }*/
+
+    public double CalculationByDistance(LatLng StartP, LatLng EndP) {
+        int Radius = 6371;// radius of earth in Km
+        double lat1 = StartP.latitude;
+        double lat2 = EndP.latitude;
+        double lon1 = StartP.longitude;
+        double lon2 = EndP.longitude;
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + Math.cos(Math.toRadians(lat1))
+                * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
+                * Math.sin(dLon / 2);
+        double c = 2 * Math.asin(Math.sqrt(a));
+        double valueResult = Radius * c;
+        double km = valueResult / 1;
+        DecimalFormat newFormat = new DecimalFormat("####");
+        int kmInDec = Integer.valueOf(newFormat.format(km));
+        double meter = valueResult % 1000;
+        int meterInDec = Integer.valueOf(newFormat.format(meter));
+        Log.i("Radius Value", "" + valueResult + "   KM  " + kmInDec
+                + " Meter   " + meterInDec);
+
+        return Radius * c;
+    }
+
+
+    public void addMarkerFromLatLongList(ArrayList<LatLng> latlongs){
+        for (int i=0; i<latlongs.size();i++){
+            mMap.addMarker(new MarkerOptions().position(latlongs.get(i)));
+        }
     }
 
     public void onMyLocationClick(@NonNull Location location) {
         Toast.makeText(this, "Current location:\n" + location, Toast.LENGTH_LONG).show();
+        location.getLatitude();
+        location.getLongitude();
     }
 
     public boolean onMyLocationButtonClick() {
