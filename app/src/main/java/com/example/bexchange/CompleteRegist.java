@@ -79,6 +79,9 @@ public class CompleteRegist extends AppCompatActivity {
                             }
                         });
 
+                Intent actIntent = new Intent(
+                        CompleteRegist.this,DashboardActivity2.class);
+                startActivity(actIntent);
 
 
                 /*b.collection("users").add(user).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {

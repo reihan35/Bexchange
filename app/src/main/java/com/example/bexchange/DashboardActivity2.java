@@ -30,6 +30,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -46,7 +47,7 @@ import java.util.ArrayList;
 import com.google.firebase.auth.FirebaseUser;
 
 public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener,
-        GoogleMap.OnMyLocationClickListener {
+        GoogleMap.OnMyLocationClickListener, GoogleMap.OnMarkerClickListener, {
 
     private AppBarConfiguration mAppBarConfiguration;
     private FrameLayout log_out;
@@ -128,6 +129,8 @@ public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyC
 
             mMap.setOnMyLocationButtonClickListener(this);
             mMap.setOnMyLocationClickListener(this);
+            LatLng us = new LatLng(getLocation().getLatitude(),getLocation().getLongitude());
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(us, 13F));
             // Set a preference for minimum and maximum zoom.
 
             //  mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(, 15F));
@@ -147,17 +150,25 @@ public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyC
                                     Double Lat = (Double) document.get("Lat");
                                     Double Long = (Double) document.get("Long");
                                     LatLng p1 = new LatLng(Lat,Long);
-                                    if (CalculationByDistance(p1,(new LatLng(posotionLat,positionLog))) < 4) { //we need to change it to 0.05
-                                        mMap.addMarker(new MarkerOptions().position(p1).title(""+document.get("name")));
+                                    if (CalculationByDistance(p1,(new LatLng(posotionLat,positionLog))) < 4 && !document.getId().equals(mAuth.getCurrentUser().getEmail())) { //we need to change it to 0.05
+                                        mMap.addMarker(new MarkerOptions().position(p1).title(""+document.get("name")).snippet(document.getId()));
                                         Log.d("a","LA DISTANCE  PPPPPPPPPPPPPPPPPPPPPPPPP");
-                                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(p1, 13F));
                                     }
+
+                                    if (document.getId().equals(mAuth.getCurrentUser().getEmail())){
+                                        mMap.addMarker(new MarkerOptions().position(p1).title(""+document.get("name")).snippet("My home"));
+                                        //Log.d("a","LA DISTANCE  PPPPPPPPPPPPPPPPPPPPPPPPP");
+                                    }
+
                                 }
                             } else {
                                 Log.w("what", "Error getting documents.", task.getException());
                             }
                         }
                     });
+
+            googleMap.setOnMarkerClickListener(this);
+
         }
 
         //LatLng paris = new LatLng(48.864716, 2.349014);
@@ -165,7 +176,15 @@ public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyC
         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(paris, 15F));
     }
 
-
+    @Override
+    public boolean onMarkerClick(final Marker marker) {
+        Log.d("a","LA DISTANCE  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        Intent actIntent = new Intent(DashboardActivity2.this,ListOfBookActivity.class);
+        actIntent.putExtra("user",marker.getSnippet());
+        startActivity(actIntent);
+        return true;
+    }
+    
     /*public ArrayList<LatLng> SearchUsersWhere(){
        // Log.d("a","MAIS WAAAATTTT THEEE FUUUUUCKKKK");
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -274,6 +293,11 @@ public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyC
                 startActivity(intent);
                 return true;
 
+            case R.id.nav_my_books:
+                Intent actIntent = new Intent(DashboardActivity2.this,ListOfBookActivity.class);
+                actIntent.putExtra("user", mAuth.getCurrentUser().getEmail());
+                startActivity(actIntent);
+                
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
@@ -332,7 +356,7 @@ public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyC
 
     public void listBookUser(View view) {
         Intent actIntent = new Intent(DashboardActivity2.this,ListOfBookActivity.class);
-        actIntent.putExtra("user", "matthieueyraud47@gmail.com");
+        actIntent.putExtra("user", mAuth.getCurrentUser().getEmail());
         startActivity(actIntent);
     }
 }
