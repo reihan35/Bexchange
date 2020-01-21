@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,6 +27,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -32,6 +35,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,12 +46,18 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import com.google.firebase.auth.FirebaseUser;
 
+import org.json.JSONObject;
+
 public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener,
-        GoogleMap.OnMyLocationClickListener, GoogleMap.OnMarkerClickListener, {
+        GoogleMap.OnMyLocationClickListener, GoogleMap.OnMarkerClickListener{
 
     private AppBarConfiguration mAppBarConfiguration;
     private FrameLayout log_out;
@@ -82,13 +92,18 @@ public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyC
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                scanBarCode(view);
+                /*
                 Intent intent = new Intent(DashboardActivity2.this, AddBookActivity.class);
                 startActivity(intent);
+
+                 */
                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();*/
             }
 
         });
+        /*
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -101,7 +116,7 @@ public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyC
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
+*/
         /*private Button logOut = findViewById(R.id.logout);
 
         //log_out = findViewById(R.id.nav_share);
@@ -294,7 +309,7 @@ public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyC
                 return true;
 
             case R.id.nav_my_books:
-                Intent actIntent = new Intent(DashboardActivity2.this,ListOfBookActivity.class);
+                Intent actIntent = new Intent(DashboardActivity2.this,ListOfMyBooksActivity.class);
                 actIntent.putExtra("user", mAuth.getCurrentUser().getEmail());
                 startActivity(actIntent);
                 
@@ -358,5 +373,88 @@ public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyC
         Intent actIntent = new Intent(DashboardActivity2.this,ListOfBookActivity.class);
         actIntent.putExtra("user", mAuth.getCurrentUser().getEmail());
         startActivity(actIntent);
+    }
+
+    private static final int MY_CAMERA_REQUEST_CODE = 100;
+    private String isbn;
+
+
+
+    public void scanBarCode(View v){
+        if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
+        }
+        Intent intent = new Intent(this,ScanBookActivity.class);
+        startActivityForResult(intent,0);
+    }
+
+
+    private class RequestBookInfo extends AsyncTask<Barcode, Integer, JSONObject> {
+        protected JSONObject doInBackground(Barcode... barcodes) {
+            Log.d("JSON", "i am here1");
+            Barcode barcode = barcodes[0];
+            try  {
+                HttpURLConnection urlConnection = null;
+                java.net.URL url = new URL("https://www.googleapis.com/books/v1/volumes?q=isbn:" + barcode.displayValue);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.setReadTimeout(10000 /* milliseconds */ );
+                urlConnection.setConnectTimeout(15000 /* milliseconds */ );
+                urlConnection.setDoOutput(true);
+                urlConnection.connect();
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+                StringBuilder sb = new StringBuilder();
+
+                String line;
+                while ((line = br.readLine()) != null) {
+                    sb.append(line + "\n");
+                }
+                br.close();
+
+                String jsonString = sb.toString();
+                System.out.println("JSON: " + jsonString);
+                JSONObject books = new JSONObject(jsonString);
+
+                return books;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject result) {
+            Log.d("JSON", "i am here2");
+            submitBook(result);
+        }
+    }
+
+    public void submitBook(JSONObject book){
+        Log.d("JSON", "i am here3");
+        Intent intent = new Intent(DashboardActivity2.this,SubmitBookActivity.class);
+        intent.putExtra("book", book.toString());
+        intent.putExtra("isbn", isbn);
+        startActivity(intent);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode==0){
+            if (resultCode == CommonStatusCodes.SUCCESS) {
+                if(data!=null){
+                    final Barcode barcode = data.getParcelableExtra("barcode");
+                    Log.d("JSON", "i am here");
+                    isbn = barcode.displayValue;
+
+                    new RequestBookInfo().execute(barcode);
+
+                }
+            }
+        }
+        else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }

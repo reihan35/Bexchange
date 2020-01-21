@@ -29,6 +29,8 @@ public class BookAdapter extends ArrayAdapter<Book> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.small_book,parent, false);
         }
 
+        Log.d("testbooks", "ici3");
+
         BookViewHolder viewHolder = (BookViewHolder) convertView.getTag();
         if(viewHolder == null){
             viewHolder = new BookViewHolder();
@@ -38,7 +40,6 @@ public class BookAdapter extends ArrayAdapter<Book> {
             convertView.setTag(viewHolder);
         }
 
-        //getItem(position) va récupérer l'item [position] de la List<Tweet> tweets
         Book book = getItem(position);
         RequestOptions options = new RequestOptions()
                 .centerCrop()

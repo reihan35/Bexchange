@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -152,6 +153,8 @@ public class SubmitBookActivity extends AppCompatActivity {
         if (requestCode == FILLED_BOOK_REQUEST) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
+                Button bt = findViewById(R.id.submit_book_button_prefilled);
+                bt.setVisibility(View.GONE);
                 fillBookInfoAfterRequest(data);
 
             }

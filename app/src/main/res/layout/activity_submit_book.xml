@@ -48,6 +48,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/submit_book_button_prefilled"
                     app:layout_constraintTop_toBottomOf="@id/bookResume"
                     app:layout_constraintLeft_toRightOf="parent"
                     app:layout_constraintRight_toLeftOf="parent"
