@@ -55,6 +55,8 @@
                     android:layout_marginTop="20dp"
                     android:text="Add"
                     android:onClick="addToDatabase"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:background="@drawable/button_drawable"
                     />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
