@@ -33,7 +33,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="24dp"
-        app:srcCompat="@drawable/add_book" />
+        app:srcCompat="@drawable/add_book"
+        app:backgroundTint="@color/colorPrimary"/>
 
 
 

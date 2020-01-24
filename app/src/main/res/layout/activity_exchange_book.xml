@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+                <ImageView
+                    android:id="@+id/bookImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_menu_camera"
+                    app:layout_constraintTop_toBottomOf="@id/bookTitle"
+                    app:layout_constraintBottom_toTopOf="@id/bookResume"
+                    app:layout_constraintLeft_toRightOf="parent"
+                    app:layout_constraintRight_toLeftOf="parent"/>
+
+                <TextView
+                    android:id="@+id/bookTitle"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="this is just a test"
+                    app:layout_constraintLeft_toRightOf="parent"
+                    app:layout_constraintRight_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:paddingVertical="20dp"
+                    android:paddingHorizontal="10dp"/>
+
+                <TextView
+                    android:id="@+id/bookResume"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="aa"
+                    app:layout_constraintTop_toBottomOf="@+id/bookImage"
+                    app:layout_constraintLeft_toRightOf="parent"
+                    app:layout_constraintRight_toLeftOf="parent"
+                    android:paddingVertical="20dp"
+                    android:paddingHorizontal="70dp"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/exchange_book"
+                    app:layout_constraintTop_toBottomOf="@id/bookResume"
+                    app:layout_constraintLeft_toRightOf="parent"
+                    app:layout_constraintRight_toLeftOf="parent"
+                    android:layout_marginTop="20dp"
+                    android:text="Exchange"
+                    android:onClick="addToDatabase"
+                    />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

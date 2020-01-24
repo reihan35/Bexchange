@@ -31,11 +31,6 @@ import static com.example.bexchange.Util.TextViewUtil.makeTextViewResizable;
 
 public class SubmitBookActivity extends AppCompatActivity {
     private JSONObject book;
-
-
-
-
-
     private void fillBookInfo(JSONObject bookInfo) throws JSONException, MalformedURLException {
 
         // ISBN is a primary key, no references to different books

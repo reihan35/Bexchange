@@ -38,7 +38,7 @@
                     android:id="@+id/bookResume"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+                    android:text="mmmm"
                     app:layout_constraintTop_toBottomOf="@+id/bookImage"
                     app:layout_constraintLeft_toRightOf="parent"
                     app:layout_constraintRight_toLeftOf="parent"
@@ -53,7 +53,7 @@
                     app:layout_constraintLeft_toRightOf="parent"
                     app:layout_constraintRight_toLeftOf="parent"
                     android:layout_marginTop="20dp"
-                    android:text="Ajouter"
+                    android:text="Add"
                     android:onClick="addToDatabase"
                     />
         </androidx.constraintlayout.widget.ConstraintLayout>
