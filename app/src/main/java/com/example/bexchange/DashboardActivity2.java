@@ -71,6 +71,7 @@ public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyC
         setContentView(R.layout.activity_dashboard2);
         Toolbar toolbar = findViewById(R.id.toolbar);
 
+        setTitle("Bexchange");
         defaultLocation.setLatitude(48.864716);
         defaultLocation.setLongitude(2.349014);
         setSupportActionBar(toolbar);
@@ -165,7 +166,7 @@ public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyC
                                     Double Lat = (Double) document.get("Lat");
                                     Double Long = (Double) document.get("Long");
                                     LatLng p1 = new LatLng(Lat,Long);
-                                    if (CalculationByDistance(p1,(new LatLng(posotionLat,positionLog))) < 4 && !document.getId().equals(mAuth.getCurrentUser().getEmail())) { //we need to change it to 0.05
+                                    if (CalculationByDistance(p1,(new LatLng(posotionLat,positionLog))) < 200 && !document.getId().equals(mAuth.getCurrentUser().getEmail())) { //we need to change it to 0.05
                                         mMap.addMarker(new MarkerOptions().position(p1).title(""+document.get("name")).snippet(document.getId()));
                                         Log.d("a","LA DISTANCE  PPPPPPPPPPPPPPPPPPPPPPPPP");
                                     }
