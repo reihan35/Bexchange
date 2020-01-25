@@ -42,13 +42,17 @@ public class ListOfMyBooksActivityExchange extends AppCompatActivity {
     }
 
     private void handleBooks(final String usr){
-
         getAllBooks(usr, new FirebaseUtil.OnBooksReceived() {
             @Override
             public void onBooksReceived(List<Book> books) {
                 lBooks = books;
-                RemovableBookAdapterExchange adapter = new RemovableBookAdapterExchange(ListOfMyBooksActivityExchange.this, books,usr,getIntent().getStringExtra("title_get"));
-                mListView.setAdapter(adapter);
+                if (books.size()==0){
+                    Toast.makeText(getApplicationContext(), "You should have at least one book", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    RemovableBookAdapterExchange adapter = new RemovableBookAdapterExchange(ListOfMyBooksActivityExchange.this, books,usr,getIntent().getStringExtra("title_get"));
+                    mListView.setAdapter(adapter);
+                }
             }
         });
     }

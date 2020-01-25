@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:text="Delete"
         android:onClick="removeBooks"
+        android:id="@+id/deleteButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="parent"
         app:layout_constraintRight_toLeftOf="parent"

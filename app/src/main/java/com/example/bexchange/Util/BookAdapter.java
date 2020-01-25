@@ -60,13 +60,13 @@ public class BookAdapter extends ArrayAdapter<Book> {
         Glide.with(getContext()).load(book.getImgLink()).apply(options).into(viewHolder.imgBook);
 
         //il ne reste plus qu'à remplir notre vue
+
         viewHolder.author.setText(book.getAuthor());
         viewHolder.title.setText(book.getTitle());
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 Intent intent = new Intent(c, ExchangeBookActivity.class);
                 intent.putExtra("title",book.getTitle());
-                Log.d("a","aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"+ book.getDesc());
                 intent.putExtra("resume",book.getDesc());
                 intent.putExtra("imageLink",book.getImgLink());
                 c.startActivity(intent);

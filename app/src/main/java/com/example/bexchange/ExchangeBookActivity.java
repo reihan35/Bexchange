@@ -32,6 +32,7 @@ import static com.example.bexchange.Util.TextViewUtil.makeTextViewResizable;
 public class ExchangeBookActivity extends AppCompatActivity {
     private JSONObject book;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,10 +41,19 @@ public class ExchangeBookActivity extends AppCompatActivity {
         String resume = getIntent().getStringExtra("resume");
         String image = getIntent().getStringExtra("imageLink");
         TextView titleView = findViewById(R.id.bookTitle2);
+        ImageView iv = findViewById(R.id.bookImage2);
+
         titleView.setText(title);
         TextView resumeView = findViewById(R.id.bookResume2);
         resumeView.setText(resume);
         Button bt = findViewById(R.id.exchange_book);
+        RequestOptions options = new RequestOptions()
+                .centerInside()
+                .placeholder(R.mipmap.ic_launcher_round)
+                .error(R.mipmap.ic_launcher_round);
+
+        Glide.with(ExchangeBookActivity.this).load(image).apply(options).into(iv);
+
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

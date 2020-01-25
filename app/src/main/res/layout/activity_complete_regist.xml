@@ -53,15 +53,6 @@
         android:layout_height="wrap_content"
         android:hint="Postal code" />
 
-    <Button
-        android:id="@+id/photo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/button_drawable"
-        android:layout_marginTop="24dp"
-        android:text="Add profile photo"
-        style="?android:attr/borderlessButtonStyle"/>
-
 
     <Button
         android:id="@+id/register3"

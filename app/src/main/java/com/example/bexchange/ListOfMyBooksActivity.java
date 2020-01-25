@@ -45,8 +45,15 @@ public class ListOfMyBooksActivity extends AppCompatActivity {
             @Override
             public void onBooksReceived(List<Book> books) {
                 lBooks = books;
-                RemovableBookAdapter adapter = new RemovableBookAdapter(ListOfMyBooksActivity.this, books);
-                mListView.setAdapter(adapter);
+                if (books.size()==0){
+                    Toast.makeText(getApplicationContext(), "No books yet !", Toast.LENGTH_LONG).show();
+                    findViewById(R.id.deleteButton).setVisibility(View.GONE);
+                }
+
+                else {
+                    RemovableBookAdapter adapter = new RemovableBookAdapter(ListOfMyBooksActivity.this, books);
+                    mListView.setAdapter(adapter);
+                }
             }
         });
     }
@@ -64,7 +71,7 @@ public class ListOfMyBooksActivity extends AppCompatActivity {
             }
             i++;
         }
-        Toast.makeText(getApplicationContext(), i + " documents ont été supprimés" , Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), i + " book deleted " , Toast.LENGTH_SHORT).show();
         finish();
     }
 
