@@ -166,7 +166,7 @@ public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyC
                                     Double Lat = (Double) document.get("Lat");
                                     Double Long = (Double) document.get("Long");
                                     LatLng p1 = new LatLng(Lat,Long);
-                                    if (CalculationByDistance(p1,(new LatLng(posotionLat,positionLog))) < 200 && !document.getId().equals(mAuth.getCurrentUser().getEmail())) { //we need to change it to 0.05
+                                    if (CalculationByDistance(p1,(new LatLng(posotionLat,positionLog))) < 200 && !document.getId().equals(mAuth.getCurrentUser().getEmail()) ) { //we need to change it to 0.05
                                         mMap.addMarker(new MarkerOptions().position(p1).title(""+document.get("name")).snippet(document.getId()));
                                         Log.d("a","LA DISTANCE  PPPPPPPPPPPPPPPPPPPPPPPPP");
                                     }

@@ -33,7 +33,12 @@ public class RemovableBookAdapter extends BookAdapter {
         checkbox.setVisibility(View.VISIBLE);
         Book book = getItem(position);
         checkbox.setTag (position);
-
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+            }
+        });
         checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override

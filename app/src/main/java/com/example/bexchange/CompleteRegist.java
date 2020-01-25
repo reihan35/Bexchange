@@ -49,7 +49,6 @@ public class CompleteRegist extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complete_regist);
         imageView = findViewById(R.id.avatar);
-        select = findViewById(R.id.photo);
         register = findViewById(R.id.register3);
         mAuth = FirebaseAuth.getInstance();
         t = findViewById(R.id.name);
