@@ -26,7 +26,7 @@ import java.util.List;
 
 public class BookAdapter extends ArrayAdapter<Book> {
 
-    private Context c;
+    private Context c = this.getContext() ;
     //tweets est la liste des models à afficher
     public BookAdapter(Context context, List<Book> tweets) {
         super(context, 0, tweets);
@@ -50,7 +50,7 @@ public class BookAdapter extends ArrayAdapter<Book> {
             convertView.setTag(viewHolder);
         }
 
-        Book book = getItem(position);
+        final Book book = getItem(position);
         RequestOptions options = new RequestOptions()
                 .centerCrop()
                 .placeholder(R.mipmap.ic_launcher_round)
@@ -62,10 +62,13 @@ public class BookAdapter extends ArrayAdapter<Book> {
         //il ne reste plus qu'à remplir notre vue
         viewHolder.author.setText(book.getAuthor());
         viewHolder.title.setText(book.getTitle());
-        viewHolder.imgBook.setOnClickListener(new View.OnClickListener() {
+        convertView.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 Intent intent = new Intent(c, ExchangeBookActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("title",book.getTitle());
+                Log.d("a","aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"+ book.getDesc());
+                intent.putExtra("resume",book.getDesc());
+                intent.putExtra("imageLink",book.getImgLink());
                 c.startActivity(intent);
             }
         });

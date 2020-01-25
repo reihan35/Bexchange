@@ -1,5 +1,6 @@
 package com.example.bexchange.Util;
 
+import android.os.health.ServiceHealthStats;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -26,12 +27,14 @@ public class FirebaseUtil {
         String urlImage = book.getJSONObject("imageLinks").getString("thumbnail");
         String title = book.getString("title");
         String author = book.getString("authors");
+        String desc = book.getString("description");
         book = new JSONObject();
         JSONObject img = new JSONObject();
         img.put("thumbnail", urlImage);
         book.put("imageLinks", img);
         book.put("title", title);
         book.put("authors", author);
+        book.put("description",desc);
         return book;
     }
 
@@ -63,13 +66,18 @@ public class FirebaseUtil {
                     for (QueryDocumentSnapshot document : task.getResult()) {
 
                         try {
+                            System.out.println("GGGGGGGGGGGGGGGGGHHHHHHHHHHHHHHHHHHHHH");
+                            System.out.println(document.getData());
                             JSONObject data = new JSONObject(document.getData());
                             String isbn = document.getId();
                             String title = data.getString("title");
 
                             String authors = data.getString("authors");
                             String imgLink = data.getJSONObject("imageLinks").getString("thumbnail");
-                            String desc = "";
+                            String desc = data.getString("description");
+
+
+                           // String desc = data.getString("description");
                             res.add(new Book(isbn,title,authors,desc, imgLink));
                         } catch (JSONException e) {
                             e.printStackTrace();

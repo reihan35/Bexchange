@@ -36,6 +36,17 @@ public class ExchangeBookActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exchange_book);
+        String title = getIntent().getStringExtra("title");
+        String resume = getIntent().getStringExtra("resume");
+        String image = getIntent().getStringExtra("imageLink");
+        TextView titleView = findViewById(R.id.bookTitle2);
+        titleView.setText(title);
+        TextView resumeView = findViewById(R.id.bookResume2);
+        resumeView.setText(resume);
+        //Glide.with(this.getApplicationContext()).load(image).apply(options).into(viewHolder.imgBook);
+
+        /*resumeView.setText(desc);
+        imgBook.setImageBitmap(img);*/
 
 
     }
