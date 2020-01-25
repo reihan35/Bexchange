@@ -49,7 +49,30 @@ public class BookAdapter extends ArrayAdapter<Book> {
             viewHolder.imgBook = (ImageView) convertView.findViewById(R.id.img_small_book);
             convertView.setTag(viewHolder);
         }
+        for(int i=0 ; i<getCount();i++){
+            final Book book = getItem(position);
+            RequestOptions options = new RequestOptions()
+                    .centerCrop()
+                    .placeholder(R.mipmap.ic_launcher_round)
+                    .error(R.mipmap.ic_launcher_round);
 
+
+            Glide.with(getContext()).load(book.getImgLink()).apply(options).into(viewHolder.imgBook);
+
+            //il ne reste plus qu'à remplir notre vue
+
+            viewHolder.author.setText(book.getAuthor());
+            viewHolder.title.setText(book.getTitle());
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    Intent intent = new Intent(c, ExchangeBookActivity.class);
+                    intent.putExtra("title",book.getTitle());
+                    intent.putExtra("resume",book.getDesc());
+                    intent.putExtra("imageLink",book.getImgLink());
+                    c.startActivity(intent);
+                }
+            });
+        }
         final Book book = getItem(position);
         RequestOptions options = new RequestOptions()
                 .centerCrop()

@@ -17,9 +17,7 @@
       <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/javaCompile/classAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/bexchange/CompleteRegist.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/bexchange/CompleteRegist.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/bexchange/DashboardActivity2.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/bexchange/DashboardActivity2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/bexchange/Util/BookAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/bexchange/Util/BookAdapter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/bexchange/Util/RemovableBookAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/bexchange/Util/RemovableBookAdapter.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -47,29 +45,13 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/bexchange/ListOfMyBooksActivityExchange.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="451">
-              <caret line="50" column="17" selection-start-line="48" selection-start-column="13" selection-end-line="50" selection-end-column="17" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1369#1370#0" expanded="true" />
-                <element signature="e#1403#1404#0" expanded="true" />
-                <element signature="e#1479#2107#0" expanded="true" />
-                <element signature="e#2106#2107#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/bexchange/ListOfMyBooksActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="451">
-              <caret line="48" column="75" selection-start-line="48" selection-start-column="75" selection-end-line="48" selection-end-column="75" />
+            <state relative-caret-position="537">
+              <caret line="47" column="16" selection-start-line="47" selection-start-column="16" selection-end-line="47" selection-end-column="16" />
               <folding>
-                <element signature="e#1339#1848#0" expanded="true" />
-                <element signature="e#1847#1848#0" expanded="true" />
+                <element signature="e#1339#1957#0" expanded="true" />
+                <element signature="e#1956#1957#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -119,7 +101,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/bexchange/Util/RemovableBookAdapterExchange.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="123">
+            <state relative-caret-position="1476">
               <caret line="50" column="67" lean-forward="true" selection-start-line="50" selection-start-column="67" selection-end-line="50" selection-end-column="67" />
               <folding>
                 <element signature="e#2901#2902#0" expanded="true" />
@@ -128,11 +110,29 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/bexchange/Util/RemovableBookAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="595">
-              <caret line="38" column="16" selection-start-line="38" selection-start-column="16" selection-end-line="38" selection-end-column="16" />
+            <state relative-caret-position="277">
+              <caret line="36" column="8" selection-start-line="36" selection-start-column="8" selection-end-line="36" selection-end-column="8" />
+              <folding>
+                <element signature="e#1342#1792#0" expanded="true" />
+                <element signature="e#1791#1792#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/bexchange/Util/BookAdapter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="332">
+              <caret line="75" column="44" lean-forward="true" selection-start-line="75" selection-start-column="44" selection-end-line="75" selection-end-column="44" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#3378#3778#0" expanded="true" />
+                <element signature="e#3777#3778#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -160,7 +160,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>DIS</find>
       <find>LA</find>
       <find>PPPP</find>
       <find>mater</find>
@@ -190,6 +189,7 @@
       <find>bookIma</find>
       <find>toas</find>
       <find>onmaprea</find>
+      <find>getView</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -213,16 +213,16 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/bexchange/Util/RemovableBookAdapterExchange.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/bexchange/Util/FirebaseUtil.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/bexchange/Util/Book.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/bexchange/Util/BookAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_exchange_book.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/bexchange/ExchangeBookActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/bexchange/ListOfMyBooksActivityExchange.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_list_of_my_books.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/bexchange/ListOfMyBooksActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_complete_regist.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/bexchange/CompleteRegist.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/bexchange/DashboardActivity2.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/bexchange/Util/RemovableBookAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/bexchange/ListOfMyBooksActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/bexchange/Util/BookAdapter.java" />
       </list>
     </option>
   </component>
@@ -408,7 +408,7 @@
       <window_info anchor="bottom" id="Version Control" order="4" weight="0.32967034" />
       <window_info anchor="bottom" id="Terminal" order="5" weight="0.52335167" />
       <window_info anchor="bottom" id="Event Log" order="6" side_tool="true" />
-      <window_info anchor="bottom" id="Build" order="7" visible="true" weight="0.28846154" />
+      <window_info anchor="bottom" id="Build" order="7" weight="0.28846154" />
       <window_info anchor="bottom" id="Find" order="8" />
       <window_info anchor="bottom" id="Android Profiler" order="9" weight="0.5364011" />
       <window_info anchor="right" id="Device File Explorer" order="0" side_tool="true" />
@@ -629,13 +629,6 @@
       </provider>
       <provider editor-type-id="android-designer2" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/bexchange/Util/BookAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="738">
-          <caret line="18" column="20" lean-forward="true" selection-start-line="18" selection-start-column="20" selection-end-line="18" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/bexchange/Util/FirebaseUtil.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="521">
@@ -703,17 +696,6 @@
       </provider>
       <provider editor-type-id="android-designer2" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/bexchange/ListOfMyBooksActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="451">
-          <caret line="48" column="75" selection-start-line="48" selection-start-column="75" selection-end-line="48" selection-end-column="75" />
-          <folding>
-            <element signature="e#1339#1848#0" expanded="true" />
-            <element signature="e#1847#1848#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/bexchange/RegistrationActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1066">
@@ -754,9 +736,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/bexchange/Util/RemovableBookAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="277">
+          <caret line="36" column="8" selection-start-line="36" selection-start-column="8" selection-end-line="36" selection-end-column="8" />
+          <folding>
+            <element signature="e#1342#1792#0" expanded="true" />
+            <element signature="e#1791#1792#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/bexchange/ListOfMyBooksActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="537">
+          <caret line="47" column="16" selection-start-line="47" selection-start-column="16" selection-end-line="47" selection-end-column="16" />
+          <folding>
+            <element signature="e#1339#1957#0" expanded="true" />
+            <element signature="e#1956#1957#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/bexchange/Util/RemovableBookAdapterExchange.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="123">
+        <state relative-caret-position="1476">
           <caret line="50" column="67" lean-forward="true" selection-start-line="50" selection-start-column="67" selection-end-line="50" selection-end-column="67" />
           <folding>
             <element signature="e#2901#2902#0" expanded="true" />
@@ -764,10 +768,15 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/bexchange/Util/RemovableBookAdapter.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/bexchange/Util/BookAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="38" column="16" selection-start-line="38" selection-start-column="16" selection-end-line="38" selection-end-column="16" />
+        <state relative-caret-position="332">
+          <caret line="75" column="44" lean-forward="true" selection-start-line="75" selection-start-column="44" selection-end-line="75" selection-end-column="44" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#3378#3778#0" expanded="true" />
+            <element signature="e#3777#3778#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
