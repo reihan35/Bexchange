@@ -43,6 +43,16 @@ public class ExchangeBookActivity extends AppCompatActivity {
         titleView.setText(title);
         TextView resumeView = findViewById(R.id.bookResume2);
         resumeView.setText(resume);
+        Button bt = findViewById(R.id.exchange_book);
+        bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ExchangeBookActivity.this,ListOfMyBooksActivityExchange.class);
+                startActivity(intent);
+            }
+        });
+
+
         //Glide.with(this.getApplicationContext()).load(image).apply(options).into(viewHolder.imgBook);
 
         /*resumeView.setText(desc);

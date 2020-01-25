@@ -41,7 +41,6 @@ public class ListOfMyBooksActivity extends AppCompatActivity {
 
 
     private void handleBooks(String usr){
-
         getAllBooks(usr, new FirebaseUtil.OnBooksReceived() {
             @Override
             public void onBooksReceived(List<Book> books) {
