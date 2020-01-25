@@ -27,6 +27,7 @@ public class ListOfBookActivity extends AppCompatActivity {
         mListView = (ListView) findViewById(R.id.list_of_books);
         String user = getIntent().getStringExtra("user");
         String userAuth = auth.getCurrentUser().getEmail();
+        String book = getIntent().getStringExtra("book");
         if(user.equals(userAuth)){
             handleBooks(user);
         }
@@ -48,6 +49,7 @@ public class ListOfBookActivity extends AppCompatActivity {
                     Log.d("TEST", books.toString());
                 }
                 BookAdapter adapter = new BookAdapter(ListOfBookActivity.this, books);
+
                 mListView.setAdapter(adapter);
             }
         });

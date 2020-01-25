@@ -25,6 +25,7 @@ public class ListOfMyBooksActivityExchange extends AppCompatActivity {
     private ListView mListView;
     FirebaseAuth auth = FirebaseAuth.getInstance();
     private List<Book> lBooks = new ArrayList<>();
+    String title_book_get = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,14 +37,17 @@ public class ListOfMyBooksActivityExchange extends AppCompatActivity {
         handleBooks(userAuth);
     }
 
+    public void set_title_book(String t){
+        title_book_get = t;
+    }
 
-    private void handleBooks(String usr){
+    private void handleBooks(final String usr){
 
         getAllBooks(usr, new FirebaseUtil.OnBooksReceived() {
             @Override
             public void onBooksReceived(List<Book> books) {
                 lBooks = books;
-                RemovableBookAdapterExchange adapter = new RemovableBookAdapterExchange(ListOfMyBooksActivityExchange.this, books);
+                RemovableBookAdapterExchange adapter = new RemovableBookAdapterExchange(ListOfMyBooksActivityExchange.this, books,usr,getIntent().getStringExtra("title_get"));
                 mListView.setAdapter(adapter);
             }
         });

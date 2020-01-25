@@ -36,7 +36,7 @@ public class ExchangeBookActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exchange_book);
-        String title = getIntent().getStringExtra("title");
+        final String title = getIntent().getStringExtra("title");
         String resume = getIntent().getStringExtra("resume");
         String image = getIntent().getStringExtra("imageLink");
         TextView titleView = findViewById(R.id.bookTitle2);
@@ -48,6 +48,7 @@ public class ExchangeBookActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ExchangeBookActivity.this,ListOfMyBooksActivityExchange.class);
+                intent.putExtra("title_get",title);
                 startActivity(intent);
             }
         });

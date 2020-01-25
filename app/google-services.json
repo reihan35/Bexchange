@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1052426034808-e54npj79vjjclklakuih2qla4fag75p1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bexchange",
+            "certificate_hash": "11fb676588040a2e4d603a740281bf0c38670d6d"
+          }
+        },
+        {
           "client_id": "1052426034808-959h0d4obppqo8jervp3alps2hj4r5m0.apps.googleusercontent.com",
           "client_type": 3
         }
