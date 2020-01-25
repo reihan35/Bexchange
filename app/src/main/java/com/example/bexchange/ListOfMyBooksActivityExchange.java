@@ -30,8 +30,8 @@ public class ListOfMyBooksActivityExchange extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("testbooks", "ici");
-        setContentView(R.layout.activity_list_of_my_books);
-        mListView = (ListView) findViewById(R.id.list_of_my_books);
+        setContentView(R.layout.activity_list_of_my_books_ex);
+        mListView = (ListView) findViewById(R.id.list_of_my_books2);
         String user = getIntent().getStringExtra("user");
         String userAuth = auth.getCurrentUser().getEmail();
         handleBooks(userAuth);

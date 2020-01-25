@@ -35,19 +35,19 @@ public class RemovableBookAdapterExchange extends BookAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         Log.d("testbooks", "ici2");
         convertView = super.getView(position,convertView, parent);
-        CheckBox checkbox = convertView.findViewById(R.id.check_book);
-        checkbox.setVisibility(View.VISIBLE);
+       /*CheckBox checkbox = convertView.findViewById(R.id.check_book);
+        checkbox.setVisibility(View.VISIBLE);*/
         final Book book = getItem(position);
-        checkbox.setTag (position);
+        //checkbox.setTag (position);
 
-        checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+       // checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
-            @Override
+            /*@Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 int getPosition = (Integer) buttonView.getTag();  // Here we get the position that we have set for the checkbox using setTag.
                 list.get(getPosition).setChecked(buttonView.isChecked()); // Set the value of checkbox to maintain its state.
             }
-        });
+        });*/
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 Intent intent = new Intent(c, DashboardActivity2.class);
@@ -65,7 +65,7 @@ public class RemovableBookAdapterExchange extends BookAdapter {
                 //c.startActivity(intent);
             }
         });
-        checkbox.setChecked(list.get(position).isChecked());
+        //checkbox.setChecked(list.get(position).isChecked());
         return convertView;
     }
 
