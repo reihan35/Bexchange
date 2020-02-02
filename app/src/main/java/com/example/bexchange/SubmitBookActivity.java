@@ -107,7 +107,6 @@ public class SubmitBookActivity extends AppCompatActivity {
             return;
             */
             String isbn = getIntent().getStringExtra("isbn");
-            Toast.makeText(getApplicationContext(), "" + book.getInt("totalItems"), Toast.LENGTH_LONG).show();
             if (book.getInt("totalItems") == 0) {
                 Intent intent2 = new Intent(SubmitBookActivity.this,FillFormBook.class);
                 intent2.putExtra("isbn", isbn );
