@@ -50,7 +50,7 @@ public class ListOfMyBooksActivityExchange extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "You should have at least one book", Toast.LENGTH_LONG).show();
                 }
                 else {
-                    RemovableBookAdapterExchange adapter = new RemovableBookAdapterExchange(ListOfMyBooksActivityExchange.this, books,usr,getIntent().getStringExtra("title_get"));
+                    RemovableBookAdapterExchange adapter = new RemovableBookAdapterExchange(ListOfMyBooksActivityExchange.this, books,usr,getIntent().getStringExtra("title_get"),getIntent().getStringExtra("userToExchange"));
                     mListView.setAdapter(adapter);
                 }
             }

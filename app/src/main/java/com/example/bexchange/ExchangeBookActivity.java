@@ -40,6 +40,7 @@ public class ExchangeBookActivity extends AppCompatActivity {
         final String title = getIntent().getStringExtra("title");
         String resume = getIntent().getStringExtra("resume");
         String image = getIntent().getStringExtra("imageLink");
+        final String u = getIntent().getStringExtra("userToExchange");
         TextView titleView = findViewById(R.id.bookTitle2);
         ImageView iv = findViewById(R.id.bookImage2);
 
@@ -59,6 +60,7 @@ public class ExchangeBookActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ExchangeBookActivity.this,ListOfMyBooksActivityExchange.class);
                 intent.putExtra("title_get",title);
+                intent.putExtra("userToExchange",u);
                 startActivity(intent);
             }
         });

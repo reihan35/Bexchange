@@ -40,6 +40,7 @@ public class ListOfBookActivity extends AppCompatActivity {
     }
 
     private void initBooksForUser(String usr){
+        final String u = usr;
 
          getAllBooks(usr, new FirebaseUtil.OnBooksReceived() {
             @Override
@@ -48,15 +49,16 @@ public class ListOfBookActivity extends AppCompatActivity {
                 for (Book b: books) {
                     Log.d("TEST", books.toString());
                 }
-                BookAdapter adapter = new BookAdapter(ListOfBookActivity.this, books);
-
+                BookAdapter adapter = new BookAdapter(ListOfBookActivity.this, books,u);
                 mListView.setAdapter(adapter);
+
             }
         });
 
     }
 
     private void handleBooks(String usr){
+        final String u = usr;
 
         getAllBooks(usr, new FirebaseUtil.OnBooksReceived() {
             @Override
@@ -65,7 +67,7 @@ public class ListOfBookActivity extends AppCompatActivity {
                 for (Book b: books) {
                     Log.d("TEST", books.toString());
                 }
-                BookAdapter adapter = new RemovableBookAdapter(ListOfBookActivity.this, books);
+                BookAdapter adapter = new RemovableBookAdapter(ListOfBookActivity.this, books,u);
                 mListView.setAdapter(adapter);
             }
         });
