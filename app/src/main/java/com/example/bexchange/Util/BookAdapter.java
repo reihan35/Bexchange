@@ -27,9 +27,11 @@ import java.util.List;
 public class BookAdapter extends ArrayAdapter<Book> {
 
     private Context c = this.getContext() ;
+    protected String usr;
     //tweets est la liste des models à afficher
-    public BookAdapter(Context context, List<Book> tweets) {
+    public BookAdapter(Context context, List<Book> tweets,String usr) {
         super(context, 0, tweets);
+        this.usr = usr;
     }
 
     @Override
@@ -89,6 +91,7 @@ public class BookAdapter extends ArrayAdapter<Book> {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 Intent intent = new Intent(c, ExchangeBookActivity.class);
+                intent.putExtra("userToExchange",usr);
                 intent.putExtra("title",book.getTitle());
                 intent.putExtra("resume",book.getDesc());
                 intent.putExtra("imageLink",book.getImgLink());

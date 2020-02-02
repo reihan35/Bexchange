@@ -40,7 +40,7 @@ public class ListOfMyBooksActivity extends AppCompatActivity {
     }
 
 
-    private void handleBooks(String usr){
+    private void handleBooks(final String usr){
         getAllBooks(usr, new FirebaseUtil.OnBooksReceived() {
             @Override
             public void onBooksReceived(List<Book> books) {
@@ -51,7 +51,7 @@ public class ListOfMyBooksActivity extends AppCompatActivity {
                 }
 
                 else {
-                    RemovableBookAdapter adapter = new RemovableBookAdapter(ListOfMyBooksActivity.this, books);
+                    RemovableBookAdapter adapter = new RemovableBookAdapter(ListOfMyBooksActivity.this, books,usr);
                     mListView.setAdapter(adapter);
                 }
             }

@@ -20,8 +20,8 @@ import java.util.List;
 public class RemovableBookAdapter extends BookAdapter {
     List<Book> list;
     //tweets est la liste des models à afficher
-    public RemovableBookAdapter(Context context, List<Book> books) {
-        super(context, books);
+    public RemovableBookAdapter(Context context, List<Book> books,String usr) {
+        super(context, books,usr);
         list = books;
     }
 

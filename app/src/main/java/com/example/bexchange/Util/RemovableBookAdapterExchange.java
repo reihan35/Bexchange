@@ -20,14 +20,16 @@ public class RemovableBookAdapterExchange extends BookAdapter {
     List<Book> list;
     Context c = this.getContext();
     String  u = "";
+    String uTo = "";
     String title_book_get = "";
 
     //tweets est la liste des models à afficher
-    public RemovableBookAdapterExchange(Context context, List<Book> books,String user,String title_book) {
-        super(context, books);
+    public RemovableBookAdapterExchange(Context context, List<Book> books,String user,String title_book,String userTO) {
+        super(context, books,userTO);
         list = books;
         u = user;
         title_book_get = title_book;
+        uTo = userTO ;
     }
 
 
@@ -54,9 +56,9 @@ public class RemovableBookAdapterExchange extends BookAdapter {
                 Intent i = new Intent(Intent.ACTION_SEND);
                 FirebaseAuth auth = FirebaseAuth.getInstance();
                 i.setType("message/rfc822");
-                i.putExtra(Intent.EXTRA_EMAIL  , new String[]{u});
+                i.putExtra(Intent.EXTRA_EMAIL  , new String[]{uTo});
                 i.putExtra(Intent.EXTRA_SUBJECT, "Ask exchange for " + title_book_get);
-                i.putExtra(Intent.EXTRA_TEXT   , "Hi ! I would like to exchange my book \"" + book.getTitle() + "\" with your book \"" + title_book_get + "\" What do you think about it ? \n");
+                i.putExtra(Intent.EXTRA_TEXT   , "Hi I would like to exchange my book \"" + book.getTitle() + "\" with your book \"" + title_book_get + "\" What do you think about it ? \n ");
                 try {
                     c.startActivity(Intent.createChooser(i, "Send mail..."));
                 } catch (android.content.ActivityNotFoundException ex) {
