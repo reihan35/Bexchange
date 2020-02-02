@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -323,9 +324,31 @@ public class FillFormBook extends Activity
         EditText authorEdit = findViewById(R.id.authorEditText);
         EditText descEdit = findViewById(R.id.descriptionEdit);
 
+
+
         String title = titleEdit.getText().toString();
         String author = authorEdit.getText().toString();
         String desc = descEdit.getText().toString();
+
+        boolean all_filled = true;
+        if(TextUtils.isEmpty(title)) {
+            titleEdit.setError("Ce champ doit être rempli");
+            all_filled = false;
+        }
+        if(TextUtils.isEmpty(author)) {
+            authorEdit.setError("Ce champ doit être rempli");
+            all_filled = false;
+        }
+        if(TextUtils.isEmpty(desc)) {
+            descEdit.setError("Ce champ doit être rempli");
+            all_filled = false;
+        }
+        if(!all_filled){
+            return;
+        }
+
+
+
         new AddToDatabaseTask().execute(title, desc, author);
 
         Intent data = new Intent();

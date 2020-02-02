@@ -148,6 +148,7 @@ public class FillFormBookV2 extends AppCompatActivity implements SurfaceHolder.C
     @Override
     public boolean onTouchEvent(MotionEvent evt) {
         if (evt.getAction() == MotionEvent.ACTION_DOWN) {
+            SurfaceView sv = findViewById(R.id.surface_view);
             touched = true;
         }
         return true;

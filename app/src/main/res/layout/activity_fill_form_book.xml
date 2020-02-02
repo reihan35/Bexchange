@@ -50,23 +50,6 @@
         android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="15sp">
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="Catégorie :"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-        <EditText
-            android:id="@+id/categoryEditText"
-            android:hint="Entrez la catégorie"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -79,26 +62,35 @@
             android:text="Description :"
             android:textSize="15sp"
             android:textStyle="bold" />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
             <EditText
                 android:id="@+id/descriptionEdit"
                 android:inputType="textMultiLine"
                 android:hint="Entrez la description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="A partir d'une photo"
-                android:background="@drawable/button_drawable"
-                android:onClick="scanResume"/>
+
 
             </LinearLayout>
-    </LinearLayout>
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="15sp">
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text=" "
+            android:textSize="15sp"
+            android:textStyle="bold" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="A partir d'une photo"
+        android:background="@drawable/button_drawable"
+        android:onClick="scanResume"/>
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -119,13 +111,13 @@
                 android:id="@+id/book_picture"
                 android:src="@drawable/camera"
                 android:visibility="gone"/>
-            <Button
+            <ImageView
                 android:id="@+id/submit_book_button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:text="Photo"
                 android:onClick="takePicture"
-                android:background="@drawable/button_drawable"
+                android:src="@drawable/camera"
                 />
         </LinearLayout>
     </LinearLayout>
