@@ -387,5 +387,12 @@ public class FillFormBook extends Activity
                 });*/
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        setResult(RESULT_CANCELED);
+        finish();
+    }
+
 
 }

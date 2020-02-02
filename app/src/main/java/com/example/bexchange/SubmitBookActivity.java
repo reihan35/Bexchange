@@ -130,6 +130,8 @@ public class SubmitBookActivity extends AppCompatActivity {
     }
 
     private void fillBookInfoAfterRequest(Intent data){
+        Button b = findViewById(R.id.submit_book_button_prefilled);
+        b.setVisibility(View.GONE);
         Bitmap img = (Bitmap) data.getParcelableExtra("img");
         String title = data.getStringExtra("title");
         String author = data.getStringExtra("author");
@@ -152,6 +154,9 @@ public class SubmitBookActivity extends AppCompatActivity {
                 bt.setVisibility(View.GONE);
                 fillBookInfoAfterRequest(data);
 
+            }
+            else if(resultCode == RESULT_CANCELED){
+                finish();
             }
         }
         else {

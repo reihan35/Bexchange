@@ -4,6 +4,13 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PixelFormat;
+import android.graphics.Point;
+import android.graphics.PorterDuff;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +24,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.solver.widgets.Rectangle;
 import androidx.core.app.ActivityCompat;
 import com.example.bexchange.R;
 import com.google.android.gms.vision.CameraSource;
@@ -25,6 +33,7 @@ import com.google.android.gms.vision.text.Text;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -35,7 +44,18 @@ public class FillFormBookV2 extends AppCompatActivity implements SurfaceHolder.C
     private CameraSource cameraSource;
     private String txt = "";
     private Lock l = new ReentrantLock();
-    private boolean touched = true;
+    private boolean touched = false;
+    private SurfaceHolder holder;
+    private SurfaceHolder holderTransparent;
+
+    private class Coordinates{
+        float x=0, y=0;
+    }
+    private Coordinates beginCoordinate = new Coordinates();
+
+    private Coordinates endCoordinate = new Coordinates();
+    private Rect selectedZone = new Rect();
+    private boolean drawRectangle;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -54,12 +74,53 @@ public class FillFormBookV2 extends AppCompatActivity implements SurfaceHolder.C
         }
     }
 
+
+    View.OnTouchListener onTouchListner = new View.OnTouchListener() {
+
+        public boolean onTouch(View v, MotionEvent event) {
+            switch(event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    Log.d("test" , "action_down");
+                    drawRectangle = true; // Start drawing the rectangle
+                    beginCoordinate.x = event.getX();
+                    beginCoordinate.y = event.getY();
+                    endCoordinate.x = event.getX();
+                    endCoordinate.y = event.getY();
+                    v.invalidate(); // Tell View that the canvas needs to be redrawn
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    Log.d("test" , "action_move");
+                    endCoordinate.x = event.getX();
+                    endCoordinate.y = event.getY();
+                    DrawFocusRect(beginCoordinate.x, beginCoordinate.y, endCoordinate.x, endCoordinate.y, Color.BLUE);
+                    v.invalidate(); // Tell View that the canvas needs to be redrawn
+                    break;
+                case MotionEvent.ACTION_UP:
+                    Log.d("test" , "action_up");
+                    // Do something with the beginCoordinate and endCoordinate, like creating the 'final' object
+                    drawRectangle = false; // Stop drawing the rectangle
+                    DrawFocusRect(beginCoordinate.x, beginCoordinate.y, endCoordinate.x, endCoordinate.y, Color.BLUE);
+
+                    //a gross approximation
+                    selectedZone.left = (int)beginCoordinate.x;
+                    selectedZone.top = (int) beginCoordinate.y ;
+                    selectedZone.right = (int) endCoordinate.x ;
+                    selectedZone.bottom = (int) endCoordinate.y ;
+                    //DrawRect(selectedZone);
+                    touched = true;
+                    v.invalidate(); // Tell View that the canvas needs to be redrawn
+                    break;
+            }
+            return true;
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.e("Main Activity", "dqs depen");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fill_form_book_v3);
-        cameraView = findViewById(R.id.surface_view);
+        cameraView = findViewById(R.id.CameraView);
         txtView = findViewById(R.id.txtview);
         TextRecognizer txtRecognizer = new TextRecognizer.Builder(getApplicationContext()).build();
         if (!txtRecognizer.isOperational()) {
@@ -74,6 +135,20 @@ public class FillFormBookV2 extends AppCompatActivity implements SurfaceHolder.C
             cameraView.getHolder().addCallback(this);
             txtRecognizer.setProcessor(this);
         }
+
+        cameraView.setOnTouchListener(onTouchListner);
+
+        holder = cameraView.getHolder();
+        holder.addCallback(this);
+        holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+
+        // Create second surface with another holder (holderTransparent)
+        SurfaceView transparentView = (SurfaceView)findViewById(R.id.TransparentView);
+
+        holderTransparent = transparentView.getHolder();
+        holderTransparent.setFormat(PixelFormat.TRANSPARENT);
+        //holderTransparent.addCallback(callBack);
+        holderTransparent.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
     }
 
     @Override
@@ -112,30 +187,22 @@ public class FillFormBookV2 extends AppCompatActivity implements SurfaceHolder.C
             final StringBuilder strBuilder = new StringBuilder();
             for (int i = 0; i < items.size(); i++) {
                 TextBlock item = (TextBlock) items.valueAt(i);
-                strBuilder.append(item.getValue());
-                strBuilder.append("/");
-                // The following Process is used to show how to use lines & elements as well
-                /*
-                for (int j = 0; j < items.size(); j++) {
-                    TextBlock textBlock = (TextBlock) items.valueAt(j);
-                    strBuilder.append(textBlock.getValue());
-                    strBuilder.append("/");
-                    for (Text line : textBlock.getComponents()) {
-                        //extract scanned text lines here
-                        Log.v("lines", line.getValue());
-                        strBuilder.append(line.getValue());
-                        strBuilder.append("/");
-                        for (Text element : line.getComponents()) {
-                            //extract scanned text words here
-                            Log.v("element", element.getValue());
-                            strBuilder.append(element.getValue());
-                        }
-                    }
-                }*/
+                Rect box = item.getBoundingBox();
+                DrawRect(box);
+                Log.d("test", item.getValue());
+
+                Log.d("test", "box " + box.toString());
+                Log.d("test", "selected zone " + selectedZone.contains(box));
+                if(selectedZone.contains(box) || box.contains(selectedZone) || selectedZone.intersect(box) || box.intersect(selectedZone)) {
+                    Log.d("test", "adding " + item.getValue());
+                    strBuilder.append(item.getValue());
+                }
+                //strBuilder.append(item.getValue());
+                //strBuilder.append("/");
             }
             Log.v("strBuilder.toString()", strBuilder.toString());
             txt = strBuilder.toString();
-
+            resumeOk(null);
             txtView.post(new Runnable() {
                 @Override
                 public void run() {
@@ -145,15 +212,6 @@ public class FillFormBookV2 extends AppCompatActivity implements SurfaceHolder.C
         }
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent evt) {
-        if (evt.getAction() == MotionEvent.ACTION_DOWN) {
-            SurfaceView sv = findViewById(R.id.surface_view);
-            touched = true;
-        }
-        return true;
-    }
-
     public void resumeOk(View v){
         Intent data = getIntent();
         data.setData(Uri.parse(txt));
@@ -161,4 +219,35 @@ public class FillFormBookV2 extends AppCompatActivity implements SurfaceHolder.C
         //---close the activity---
         finish();
     }
+
+
+
+
+    
+    private void DrawFocusRect(float RectLeft, float RectTop, float RectRight, float RectBottom, int color)
+    {
+        Log.d("test", "drawing rectangle " + RectLeft + " " + RectTop + " " + RectRight + " " + RectBottom);
+
+        Canvas canvas = holderTransparent.lockCanvas();
+        canvas.drawColor(0, PorterDuff.Mode.CLEAR);
+        //border's properties
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setColor(color);
+        paint.setStrokeWidth(4);
+        canvas.drawRect(RectLeft, RectTop, RectRight, RectBottom, paint);
+
+        holderTransparent.unlockCanvasAndPost(canvas);
+    }
+
+    private void DrawRect(Rect r){
+        DrawFocusRect(r.left, r.top, r.right, r.bottom, Color.BLUE);
+    }
+
+    protected void onDraw(Canvas canvas) {
+        if(drawRectangle) {
+            DrawFocusRect(beginCoordinate.x, beginCoordinate.y, endCoordinate.x, endCoordinate.y, Color.BLUE);
+        }
+    }
+
 }
