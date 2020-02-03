@@ -1,5 +1,6 @@
 package com.example.bexchange;
 
+import android.util.Log;
 import android.widget.ProgressBar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;

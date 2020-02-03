@@ -6,17 +6,26 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bexchange.Util.Book;
 import com.example.bexchange.Util.BookAdapter;
 import com.example.bexchange.Util.FirebaseUtil;
 import com.example.bexchange.Util.RemovableBookAdapter;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.example.bexchange.Util.FirebaseUtil.getAllBooks;
 
@@ -61,6 +70,7 @@ public class ListOfMyBooksActivity extends AppCompatActivity {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     public void removeBooks(View v){
         int i = 0;
+        final int nb_books_removed = 0;
         for (Book b:lBooks){
             if(b.isChecked()){
                 firebaseFirestore.collection("users")
@@ -71,6 +81,26 @@ public class ListOfMyBooksActivity extends AppCompatActivity {
             }
             i++;
         }
+
+        firebaseFirestore.collection("users")
+                .document(auth.getCurrentUser().getEmail())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            int before = document.get("nb_books", Integer.class);
+                            firebaseFirestore.collection("users")
+                                    .document(auth.getCurrentUser().getEmail())
+                                    .update("nb_books", before - nb_books_removed);
+
+                        } else {
+                            Log.w("what", "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+
         Toast.makeText(getApplicationContext(), i + " book deleted " , Toast.LENGTH_SHORT).show();
         finish();
     }

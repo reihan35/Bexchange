@@ -15,8 +15,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONException;
@@ -49,16 +53,17 @@ public class SubmitBookActivity extends AppCompatActivity {
         Log.d("JSON", "avant " +  urlImage);
         urlImage = urlImage.replaceAll("&zoom=[0-9]+&", "&zoom=2&");
         Log.d("JSON", "apres " + urlImage);
-        RequestOptions options = new RequestOptions()
+        /*RequestOptions options = new RequestOptions()
                 .centerCrop()
                 .placeholder(R.mipmap.ic_launcher_round)
-                .error(R.mipmap.ic_launcher_round);
+                .error(R.mipmap.ic_launcher_round);*/
 
-        Glide.with(this).load(urlImage).apply(options).into(imgBook);
+        //Glide.with(this).load(urlImage).apply(options).into(imgBook);
+        Glide.with(this).load(urlImage).into(imgBook);
         //new UrlLoadingTask(imgBook).execute(new URL(urlImage));
         titleView.setText(title);
         resumeView.setText(resume);
-        makeTextViewResizable(resumeView, 3, "Voir Plus", true);
+        makeTextViewResizable(resumeView, 5, "Voir Plus", true);
         Log.d("JSON", book.toString());
         Log.d("JSON", bookInfo.toString());
         Log.d("JSON", urlImage.toString());
@@ -66,7 +71,9 @@ public class SubmitBookActivity extends AppCompatActivity {
 
     public void addToDatabase(View view) throws JSONException {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        bookAdded();
         Log.d("firebase", "J'ajoute un document");
+
         db.collection("books")
                 .document(book.getJSONArray("industryIdentifiers").getJSONObject(0).getString("identifier"))
                 .set(toMap(book))
@@ -84,6 +91,7 @@ public class SubmitBookActivity extends AppCompatActivity {
                         Log.w("failure", "Error writing document", e);
                     }
                 });
+        finish();
     }
 
 
@@ -140,7 +148,9 @@ public class SubmitBookActivity extends AppCompatActivity {
         ImageView imgBook = findViewById(R.id.bookImage);
         titleView.setText(title);
         resumeView.setText(desc);
+        makeTextViewResizable(resumeView, 5, "Voir Plus", true);
         imgBook.setImageBitmap(img);
+        bookAdded();
     }
 
     @Override
@@ -162,5 +172,31 @@ public class SubmitBookActivity extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
         }
 
+    }
+
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+
+
+    public void bookAdded(){
+
+        firebaseFirestore.collection("users")
+                .document(auth.getCurrentUser().getEmail())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            int before = document.get("nb_books", Integer.class);
+                            firebaseFirestore.collection("users")
+                                    .document(auth.getCurrentUser().getEmail())
+                                    .update("nb_books", before + 1);
+
+                        } else {
+                            Log.w("what", "Error getting documents.", task.getException());
+                        }
+                    }
+                });
     }
 }

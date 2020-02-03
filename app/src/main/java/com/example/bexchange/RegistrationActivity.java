@@ -86,6 +86,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         }
                         else {
                             Toast.makeText(getApplicationContext(), "Registration failed! Please try again later", Toast.LENGTH_LONG).show();
+                            Log.d("test", task.getException().getMessage());
                             progressBar.setVisibility(View.GONE);
                         }
                     }

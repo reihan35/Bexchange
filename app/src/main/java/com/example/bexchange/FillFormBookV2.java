@@ -102,10 +102,10 @@ public class FillFormBookV2 extends AppCompatActivity implements SurfaceHolder.C
                     DrawFocusRect(beginCoordinate.x, beginCoordinate.y, endCoordinate.x, endCoordinate.y, Color.BLUE);
 
                     //a gross approximation
-                    selectedZone.left = (int)beginCoordinate.x;
-                    selectedZone.top = (int) beginCoordinate.y ;
-                    selectedZone.right = (int) endCoordinate.x ;
-                    selectedZone.bottom = (int) endCoordinate.y ;
+                    selectedZone.left = (int)beginCoordinate.x - 100;
+                    selectedZone.top = (int) beginCoordinate.y - 100;
+                    selectedZone.right = (int) endCoordinate.x + 100;
+                    selectedZone.bottom = (int) endCoordinate.y + 100;
                     //DrawRect(selectedZone);
                     touched = true;
                     v.invalidate(); // Tell View that the canvas needs to be redrawn
@@ -121,7 +121,6 @@ public class FillFormBookV2 extends AppCompatActivity implements SurfaceHolder.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fill_form_book_v3);
         cameraView = findViewById(R.id.CameraView);
-        txtView = findViewById(R.id.txtview);
         TextRecognizer txtRecognizer = new TextRecognizer.Builder(getApplicationContext()).build();
         if (!txtRecognizer.isOperational()) {
             Log.e("Main Activity", "Detector dependencies are not yet available");
@@ -188,19 +187,13 @@ public class FillFormBookV2 extends AppCompatActivity implements SurfaceHolder.C
             for (int i = 0; i < items.size(); i++) {
                 TextBlock item = (TextBlock) items.valueAt(i);
                 Rect box = item.getBoundingBox();
-                DrawRect(box);
-                Log.d("test", item.getValue());
-
-                Log.d("test", "box " + box.toString());
-                Log.d("test", "selected zone " + selectedZone.contains(box));
-                if(selectedZone.contains(box) || box.contains(selectedZone) || selectedZone.intersect(box) || box.intersect(selectedZone)) {
+                if(selectedZone.contains(box)){ //|| box.contains(selectedZone) || selectedZone.intersect(box) || box.intersect(selectedZone)) {
                     Log.d("test", "adding " + item.getValue());
                     strBuilder.append(item.getValue());
                 }
                 //strBuilder.append(item.getValue());
                 //strBuilder.append("/");
             }
-            Log.v("strBuilder.toString()", strBuilder.toString());
             txt = strBuilder.toString();
             resumeOk(null);
             txtView.post(new Runnable() {

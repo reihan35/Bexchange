@@ -54,12 +54,6 @@ public class CompleteRegist extends AppCompatActivity {
         t = findViewById(R.id.name);
         a = findViewById(R.id.adress);
         p = findViewById(R.id.postalCode);
-        select.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectImage(CompleteRegist.this);
-            }
-        });
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,6 +64,7 @@ public class CompleteRegist extends AppCompatActivity {
                 Double log =  getLocationFromAddress(a.getText().toString()+p.getText().toString()).get(1);
                 user.put("Lat", lat);
                 user.put("Long", log);
+                user.put("nb_books", 0);
                 db.collection("users").document(mAuth.getCurrentUser().getEmail()).set(user)
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
