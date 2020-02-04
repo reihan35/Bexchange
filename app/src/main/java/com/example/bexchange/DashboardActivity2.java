@@ -30,6 +30,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -346,12 +347,16 @@ public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyC
             case REQUEST_CODE_ASK_PERMISSIONS:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     getLocation();
+
+                    SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+                    mapFragment.getMapAsync(this);
                 } else {
                     // Permission Denied
                     Toast.makeText(this, "your message", Toast.LENGTH_SHORT)
                             .show();
                 }
                 break;
+
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
@@ -390,8 +395,10 @@ public class DashboardActivity2 extends AppCompatActivity implements OnMapReadyC
         if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
         }
-        Intent intent = new Intent(this,ScanBookActivity.class);
-        startActivityForResult(intent,0);
+        else {
+            Intent intent = new Intent(this, ScanBookActivity.class);
+            startActivityForResult(intent, 0);
+        }
     }
 
 
